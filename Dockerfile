@@ -1,4 +1,4 @@
-FROM golang:1.19-alpine
+FROM golang:1.19.4-alpine3.17
 
 # Install git.
 # Git is required for fetching the dependencies.

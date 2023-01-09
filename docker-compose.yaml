@@ -12,11 +12,7 @@ services:
       - PORT=${PORT}
       - GO_ENV=${GO_ENV}
     volumes:
-      - app:/app
-    networks:
-      - app
+      - app-backend:/app
+
 volumes:
-  app:
-networks:
-  app:
-    driver: bridge
+  app-backend:
