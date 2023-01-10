@@ -12,27 +12,40 @@ A Starter project with Golang and Fiber
 │   ├── fiber.go
 │   └── postgres.go
 ├── controllers
-│   └── user_controllers.go
-├── database
-│   └── postgres
-|       └──postgres.go
+│   ├── auth
+│   │   └── auth_controller.go
+│   ├── user
+│   │   └── user_controller.go
 ├── dto
 │   └── user_dto.go
 ├── entity
 │   └── user_entity.go
 ├── infrastructure
-│    ├── routers
-│      └── user_routers.go
-│    ├── server
-│        └── fiber.go
-│    ├── middlewares
-│        └── jwt_middlewares.go
+│   ├── database
+│   │   ├── mongo
+│   │   │   └── mongo.go
+│   │   └── postgres
+│   │       └── postgres.go
+│   └── http
+│       ├── middleware
+│       │   └── jwt_middleware.go
+│       ├── routes
+│       │   ├── auth_routes.go
+│       │   └── user_routes.go
+|       └── server
+│           └── server.go
 ├── interfaces
 │   └── user_interfaces.go
 ├── repository
-│   └── user_repository.go
+│   ├── auth
+│   │   └── auth_repository.go
+│   ├── user
+│       └── user_repository.go
 ├── service
-│   └── user_service.go
+│   ├── auth
+│   │   └── auth_service.go
+│   ├── user
+│       └── user_service.go
 ├── utils
 │    ├── password.go
 │    └── handlerError.go
