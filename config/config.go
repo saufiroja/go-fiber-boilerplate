@@ -15,6 +15,13 @@ type AppConfig struct {
 		Host string
 		Port string
 	}
+	Postgres struct {
+		Host string
+		Port string
+		User string
+		Pass string
+		Name string
+	}
 }
 
 var appConfig *AppConfig
@@ -30,6 +37,7 @@ func NewAppConfig() *AppConfig {
 
 		initApp(appConfig)
 		initFiber(appConfig)
+		initPostgres(appConfig)
 	}
 
 	return appConfig

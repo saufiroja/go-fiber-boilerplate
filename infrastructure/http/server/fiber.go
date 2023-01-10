@@ -1,12 +1,18 @@
 package server
 
 import (
+	"project/go-fiber-boilerplate/config"
+	"project/go-fiber-boilerplate/infrastructure/database/postgres"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
 func Server() *fiber.App {
+	conf := config.NewAppConfig()
 	app := fiber.New()
+
+	postgres.NewPostgres(conf)
 
 	app.Use(logger.New(logger.Config{
 		Format:     "[${time}] [${ip}:${port}] ${status} - ${latency} ${method} ${path}\n",
