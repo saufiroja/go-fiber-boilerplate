@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"project/go-fiber-boilerplate/config"
+	"project/go-fiber-boilerplate/entity"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -22,6 +23,8 @@ func NewPostgres(conf *config.AppConfig) *gorm.DB {
 	if err != nil {
 		log.Panic(err)
 	}
+
+	db.AutoMigrate(&entity.User{})
 
 	log.Println("success connect to postgresql database!")
 

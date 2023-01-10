@@ -2,7 +2,7 @@ package server
 
 import (
 	"project/go-fiber-boilerplate/config"
-	"project/go-fiber-boilerplate/infrastructure/database/postgres"
+	"project/go-fiber-boilerplate/infrastructure/http/routes"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -11,8 +11,6 @@ import (
 func Server() *fiber.App {
 	conf := config.NewAppConfig()
 	app := fiber.New()
-
-	postgres.NewPostgres(conf)
 
 	app.Use(logger.New(logger.Config{
 		Format:     "[${time}] [${ip}:${port}] ${status} - ${latency} ${method} ${path}\n",
@@ -24,6 +22,8 @@ func Server() *fiber.App {
 			"message": "APP Boilerplate is up!!!!",
 		})
 	})
+
+	routes.AuthRoutes(app, *conf)
 
 	return app
 }
