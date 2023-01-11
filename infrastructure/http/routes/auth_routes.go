@@ -18,4 +18,5 @@ func AuthRoutes(app *fiber.App, conf config.AppConfig) {
 	userControllers := controllers.NewAuthControllers(userService)
 
 	app.Post("/register", userControllers.Register)
+	app.Post("/login", userControllers.Login)
 }

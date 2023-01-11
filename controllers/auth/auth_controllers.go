@@ -38,6 +38,32 @@ func (controllers *Controllers) Register(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"code":    200,
-		"message": "Register success",
+		"message": "register success",
+	})
+}
+
+func (controller *Controllers) Login(c *fiber.Ctx) error {
+	req := &dto.Login{}
+
+	err := c.BodyParser(req)
+	if err != nil {
+		return c.Status(400).JSON(fiber.Map{
+			"code":    "400",
+			"message": err.Error(),
+		})
+	}
+
+	token, err := controller.service.Login(req.Email, req.Password)
+	if err != nil {
+		return c.Status(400).JSON(fiber.Map{
+			"code":    "400",
+			"message": err.Error(),
+		})
+	}
+
+	return c.Status(200).JSON(fiber.Map{
+		"code":    "200",
+		"message": "login success",
+		"result":  token,
 	})
 }

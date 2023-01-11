@@ -34,13 +34,13 @@ func (repo *AuthRepository) Register(user *dto.Register) error {
 	return nil
 }
 
-// func (repo *AuthRepository) Login(email string) error {
-// 	data := &entity.User{}
+func (repo *AuthRepository) Login(email string) (*entity.User, error) {
+	data := &entity.User{}
 
-// 	err := repo.DB.Model(&entity.User{}).Where("email = ?", email).First(data).Error
-// 	if err != nil {
-// 		return err
-// 	}
+	err := repo.DB.Model(&entity.User{}).Where("email = ?", email).First(data).Error
+	if err != nil {
+		return nil, err
+	}
 
-// 	return nil
-// }
+	return data, nil
+}
