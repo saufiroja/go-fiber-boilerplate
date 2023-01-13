@@ -12,7 +12,7 @@ type AuthRepository struct {
 	DB *gorm.DB
 }
 
-func NewAuthRepository(db *gorm.DB) interfaces.UserRepository {
+func NewAuthRepository(db *gorm.DB) interfaces.AuthRepository {
 	return &AuthRepository{
 		DB: db,
 	}

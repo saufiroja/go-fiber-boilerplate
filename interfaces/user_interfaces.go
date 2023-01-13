@@ -2,22 +2,27 @@ package interfaces
 
 import (
 	"project/go-fiber-boilerplate/dto"
-	"project/go-fiber-boilerplate/entity"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 type UserRepository interface {
-	Register(user *dto.Register) error
-	Login(email string) (*entity.User, error)
+	FindAllUsers() ([]dto.FindAllUsers, error)
+	FindUserByID(id string) (*dto.FindUserByID, error)
+	UpdateUserByID(id string, user *dto.UpdateUserByID) error
+	DeleteUserByID(id string) error
 }
 
 type UserService interface {
-	Register(user *dto.Register) error
-	Login(email, password string) (*dto.LoginResponse, error)
+	FindAllUsers() ([]dto.FindAllUsers, error)
+	FindUserByID(id string) (*dto.FindUserByID, error)
+	UpdateUserByID(id string, user *dto.UpdateUserByID) error
+	DeleteUserByID(id string) error
 }
 
 type UserControllers interface {
-	Register(c *fiber.Ctx) error
-	Login(c *fiber.Ctx) error
+	FindAllUsers(c *fiber.Ctx) error
+	FindUserByID(c *fiber.Ctx) error
+	UpdateUserByID(c *fiber.Ctx) error
+	DeleteUserByID(c *fiber.Ctx) error
 }

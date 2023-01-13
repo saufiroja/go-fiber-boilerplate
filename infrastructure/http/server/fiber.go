@@ -24,6 +24,7 @@ func Server() *fiber.App {
 	})
 
 	routes.AuthRoutes(app, *conf)
+	routes.UserRoutes(app, *conf)
 
 	return app
 }

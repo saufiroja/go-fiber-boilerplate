@@ -16,3 +16,25 @@ type LoginResponse struct {
 	AccessToken  string `json:"access_token"`
 	RefreshToken string `json:"refresh_token"`
 }
+
+type FindAllUsers struct {
+	ID        string `json:"id"`
+	FullName  string `json:"full_name"`
+	Email     string `json:"email"`
+	IsMale    bool   `json:"is_male"`
+	CreatedAt int64  `json:"created_at"`
+}
+
+type FindUserByID struct {
+	ID        string `json:"id"`
+	FullName  string `json:"full_name"`
+	Email     string `json:"email"`
+	IsMale    bool   `json:"is_male"`
+	CreatedAt int64  `json:"created_at"`
+}
+
+type UpdateUserByID struct {
+	FullName string `json:"full_name"`
+	Email    string `json:"email"`
+	IsMale   bool   `json:"is_male"`
+}

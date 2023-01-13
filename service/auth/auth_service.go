@@ -10,11 +10,11 @@ import (
 )
 
 type Service struct {
-	repo     interfaces.UserRepository
+	repo     interfaces.AuthRepository
 	validate *validator.Validate
 }
 
-func NewAuthService(repo interfaces.UserRepository) interfaces.UserService {
+func NewAuthService(repo interfaces.AuthRepository) interfaces.AuthService {
 	return &Service{
 		repo:     repo,
 		validate: validator.New(),

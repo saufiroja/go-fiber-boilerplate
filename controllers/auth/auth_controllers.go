@@ -8,10 +8,10 @@ import (
 )
 
 type Controllers struct {
-	service interfaces.UserService
+	service interfaces.AuthService
 }
 
-func NewAuthControllers(service interfaces.UserService) interfaces.UserControllers {
+func NewAuthControllers(service interfaces.AuthService) interfaces.AuthControllers {
 	return &Controllers{
 		service: service,
 	}
