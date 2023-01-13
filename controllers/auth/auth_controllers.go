@@ -61,6 +61,22 @@ func (controller *Controllers) Login(c *fiber.Ctx) error {
 		})
 	}
 
+	c.Cookie(&fiber.Cookie{
+		Name:     "access_token",
+		Value:    token.AccessToken,
+		MaxAge:   int(token.AccessTokenExpired),
+		SameSite: "disabled",
+		Domain:   "localhost",
+	})
+
+	c.Cookie(&fiber.Cookie{
+		Name:     "refresh_token",
+		Value:    token.RefreshToken,
+		MaxAge:   int(token.RefreshTokenExpired),
+		SameSite: "disabled",
+		Domain:   "localhost",
+	})
+
 	return c.Status(200).JSON(fiber.Map{
 		"code":    "200",
 		"message": "login success",

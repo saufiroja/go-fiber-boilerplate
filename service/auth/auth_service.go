@@ -35,19 +35,21 @@ func (s *Service) Login(email, password string) (*dto.LoginResponse, error) {
 
 	_ = utils.ComparePassword(user.Password, password)
 
-	accessToken, err := utils.GenerateAccessToken(user.ID, user.Email, user.FullName)
+	accessToken, expiredAccessToken, err := utils.GenerateAccessToken(user.ID, user.Email, user.FullName)
 	if err != nil {
 		return nil, err
 	}
 
-	refreshToken, err := utils.GenerateRefreshToken(user.ID, user.Email, user.FullName)
+	refreshToken, expiredRefreshToken, err := utils.GenerateRefreshToken(user.ID, user.Email, user.FullName)
 	if err != nil {
 		return nil, err
 	}
 
 	token := &dto.LoginResponse{
-		AccessToken:  accessToken,
-		RefreshToken: refreshToken,
+		AccessToken:         accessToken,
+		AccessTokenExpired:  expiredAccessToken,
+		RefreshToken:        refreshToken,
+		RefreshTokenExpired: expiredRefreshToken,
 	}
 
 	return token, nil
