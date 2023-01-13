@@ -4,6 +4,7 @@ import (
 	"project/go-fiber-boilerplate/config"
 	controller "project/go-fiber-boilerplate/controllers/user"
 	"project/go-fiber-boilerplate/infrastructure/database/postgres"
+	"project/go-fiber-boilerplate/infrastructure/http/middlewares"
 	repo "project/go-fiber-boilerplate/repository/user"
 	service "project/go-fiber-boilerplate/service/user"
 
@@ -16,6 +17,9 @@ func UserRoutes(app *fiber.App, conf config.AppConfig) {
 	userRepository := repo.NewUserRepository(db)
 	userService := service.NewUserService(userRepository)
 	userControllers := controller.NewUserControllers(userService)
+
+	// middleware
+	app.Use(middlewares.MiddlewaresUser)
 
 	app.Get("/users", userControllers.FindAllUsers)
 	app.Get("/users/:id", userControllers.FindUserByID)
