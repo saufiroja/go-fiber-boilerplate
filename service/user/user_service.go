@@ -4,6 +4,7 @@ import (
 	"errors"
 	"project/go-fiber-boilerplate/dto"
 	"project/go-fiber-boilerplate/interfaces"
+	"project/go-fiber-boilerplate/utils"
 
 	"github.com/go-playground/validator/v10"
 )
@@ -29,6 +30,11 @@ func (s *service) FindUserByID(id string) (*dto.FindUserByID, error) {
 }
 
 func (s *service) UpdateUserByID(id string, user *dto.UpdateUserByID) error {
+	err := s.validate.Struct(user)
+	if err != nil {
+		return utils.HandlerError(err)
+	}
+
 	data, err := s.FindUserByID(id)
 	if err != nil {
 		return errors.New("user not found")

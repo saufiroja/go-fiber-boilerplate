@@ -36,7 +36,7 @@ type FindUserByID struct {
 }
 
 type UpdateUserByID struct {
-	FullName string `json:"full_name"`
-	Email    string `json:"email"`
+	FullName string `json:"full_name" validate:"required,min=3,max=50"`
+	Email    string `json:"email" validate:"required,email"`
 	IsMale   bool   `json:"is_male"`
 }

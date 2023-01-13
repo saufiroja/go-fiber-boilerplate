@@ -14,7 +14,7 @@ type AuthRepository interface {
 
 type AuthService interface {
 	Register(user *dto.Register) error
-	Login(email, password string) (*dto.LoginResponse, error)
+	Login(user *dto.Login) (*dto.LoginResponse, error)
 }
 
 type AuthControllers interface {

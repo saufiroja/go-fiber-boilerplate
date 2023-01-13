@@ -53,7 +53,7 @@ func (controller *Controllers) Login(c *fiber.Ctx) error {
 		})
 	}
 
-	token, err := controller.service.Login(req.Email, req.Password)
+	token, err := controller.service.Login(req)
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{
 			"code":    "400",
