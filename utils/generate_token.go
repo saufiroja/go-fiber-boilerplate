@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"encoding/base64"
 	"os"
 	"time"
 
@@ -18,12 +17,7 @@ func GenerateAccessToken(id, email, fullname string) (string, error) {
 		"exp":      time.Now().Add(time.Hour * 24).Unix(),
 	})
 
-	key, err := base64.StdEncoding.DecodeString(secret)
-	if err != nil {
-		return "", err
-	}
-
-	tokenString, err := token.SignedString(key)
+	tokenString, err := token.SignedString([]byte(secret))
 	if err != nil {
 		return "", err
 	}
@@ -41,12 +35,7 @@ func GenerateRefreshToken(id, email, fullname string) (string, error) {
 		"exp":      time.Now().Add(time.Hour * 24 * 7).Unix(),
 	})
 
-	key, err := base64.StdEncoding.DecodeString(secret)
-	if err != nil {
-		return "", err
-	}
-
-	tokenString, err := token.SignedString(key)
+	tokenString, err := token.SignedString([]byte(secret))
 	if err != nil {
 		return "", err
 	}
