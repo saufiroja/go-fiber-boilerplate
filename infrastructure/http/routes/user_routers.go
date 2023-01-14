@@ -2,8 +2,8 @@ package routes
 
 import (
 	"project/go-fiber-boilerplate/config"
-	controller "project/go-fiber-boilerplate/controllers/user"
 	"project/go-fiber-boilerplate/infrastructure/database/postgres"
+	controller "project/go-fiber-boilerplate/infrastructure/http/controllers/user"
 	"project/go-fiber-boilerplate/infrastructure/http/middlewares"
 	repo "project/go-fiber-boilerplate/repository/user"
 	service "project/go-fiber-boilerplate/service/user"
