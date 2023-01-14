@@ -13,11 +13,6 @@ An example of implementing a hexagonal architecture backend using golang.
 │   ├── app.go
 │   ├── fiber.go
 │   └── postgres.go
-├── controllers
-│   ├── auth
-│   │   └── auth_controller.go
-│   ├── user
-│   │   └── user_controller.go
 ├── dto
 │   └── user_dto.go
 ├── entity
