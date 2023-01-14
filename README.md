@@ -4,6 +4,8 @@ A Starter project with Golang and Fiber
 
 # Boilerplate structure
 
+An example of implementing a hexagonal architecture backend using golang.
+
 ```
 .
 ├── config
