@@ -29,6 +29,11 @@ An example of implementing a hexagonal architecture backend using golang.
 │   │   └── postgres
 │   │       └── postgres.go
 │   └── http
+│       ├── controllers
+│       │   ├── auth
+│       │   │   └── auth_controller.go
+│       │   └── user
+│       │       └── user_controller.go
 │       ├── middleware
 │       │   └── jwt_middleware.go
 │       ├── routes
