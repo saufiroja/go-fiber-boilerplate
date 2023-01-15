@@ -8,56 +8,54 @@ An example of implementing a hexagonal architecture backend using golang.
 
 ```
 .
-├── config
-│   ├── config.go
+├── config/
 │   ├── app.go
+│   ├── config.go
 │   ├── fiber.go
 │   └── postgres.go
-├── dto
+├── dto/
 │   └── user_dto.go
-├── entity
+├── entity/
 │   └── user_entity.go
-├── infrastructure
-│   ├── database
-│   │   ├── mongo
+├── infrastructure/
+│   ├── database/
+│   │   ├── mongo/
 │   │   │   └── mongo.go
-│   │   └── postgres
+│   │   └── postgres/
 │   │       └── postgres.go
-│   └── http
-│       ├── controllers
-│       │   ├── auth
-│       │   │   └── auth_controller.go
-│       │   └── user
-│       │       └── user_controller.go
-│       ├── middleware
-│       │   └── jwt_middleware.go
-│       ├── routes
+│   └── http/
+│       ├── controllers/
+│       │   └── user_controllers.go
+│       ├── middlewares/
+│       │   └── jwt_middlewares.go
+│       ├── routes/
 │       │   ├── auth_routes.go
 │       │   └── user_routes.go
-|       └── server
+│       └── server/
 │           └── server.go
-├── interfaces
+├── interfaces/
 │   └── user_interfaces.go
-├── repository
-│   ├── auth
-│   │   └── auth_repository.go
-│   ├── user
-│       └── user_repository.go
-├── service
-│   ├── auth
+├── repository/
+│   ├── auth/
+│   │   └── auth_repository_postgres.go
+│   └── user/
+│       └── user_repository_postgres.go
+├── service/
+│   ├── auth/
 │   │   └── auth_service.go
-│   ├── user
+│   └── user/
 │       └── user_service.go
-├── utils
-│    ├── password.go
-│    └── handlerError.go
+├── utils/
+│   ├── password.go
+│   ├── handlerError.go
+│   └── generate_token.go
 ├── .env
-├── .env.example
+├── .env_example
 ├── .gitignore
 ├── Dockerfile
-├── docker-compose.yaml
 ├── README.md
-├── main.go
+├── docker-compose.yaml
 ├── go.mod
 ├── go.sum
+└── main.go
 ```
