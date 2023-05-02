@@ -1,4 +1,4 @@
-package auth
+package postgres
 
 import (
 	"project/go-fiber-boilerplate/dto"

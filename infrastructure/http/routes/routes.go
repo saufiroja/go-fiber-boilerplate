@@ -1,24 +1,28 @@
 package routes
 
-import "project/go-fiber-boilerplate/interfaces"
+import (
+	"project/go-fiber-boilerplate/interfaces"
 
-type routes struct {
+	"github.com/gofiber/fiber/v2"
+)
+
+type Routes struct {
 	// every new handler
 	authControllers interfaces.AuthControllers
 	userControllers interfaces.UserControllers
 }
 
-func NewRoutes (
+func NewRoutes(
 	authControllers interfaces.AuthControllers,
-	userControllers interfaces.UserControllers
-){
-	return &routes{
+	userControllers interfaces.UserControllers,
+) *Routes {
+	return &Routes{
 		authControllers: authControllers,
 		userControllers: userControllers,
 	}
 }
 
-func (r *routes) InitRoutes(app *fiber.App) {
+func (r *Routes) InitRoutes(app *fiber.App) {
 	app.Post("/register", r.authControllers.Register)
 	app.Post("/login", r.authControllers.Login)
 

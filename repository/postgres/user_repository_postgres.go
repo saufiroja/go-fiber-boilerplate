@@ -1,4 +1,4 @@
-package user
+package postgres
 
 import (
 	"project/go-fiber-boilerplate/dto"

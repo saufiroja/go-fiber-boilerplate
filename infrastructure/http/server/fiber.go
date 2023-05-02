@@ -2,7 +2,13 @@ package server
 
 import (
 	"project/go-fiber-boilerplate/config"
+	"project/go-fiber-boilerplate/infrastructure/database"
+	authHandler "project/go-fiber-boilerplate/infrastructure/http/handler/auth"
+	userHandler "project/go-fiber-boilerplate/infrastructure/http/handler/user"
 	"project/go-fiber-boilerplate/infrastructure/http/routes"
+	"project/go-fiber-boilerplate/repository/postgres"
+	authService "project/go-fiber-boilerplate/service/auth"
+	userService "project/go-fiber-boilerplate/service/user"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -17,26 +23,26 @@ func Server() *fiber.App {
 		TimeFormat: "2 Jan 2006 15:04:05",
 	}))
 
-	initilized(app)
+	initilized(app, conf)
 
 	return app
 }
 
-func initilized(app *fiber.App) {
-	db := postgres.NewPostgres(&conf)
+func initilized(app *fiber.App, conf *config.AppConfig) {
+	db := database.NewPostgres(conf)
 	// repository
-	authRepository := repo.NewAuthRepository(db)
-	userRepository := repo.NewUserRepository(db)
+	authRepository := postgres.NewAuthRepository(db)
+	userRepository := postgres.NewUserRepository(db)
 	// service
-	authService := service.NewAuthService(authRepository)
-	userService := service.NewUserService(userRepository)
-	
+	authService := authService.NewAuthService(authRepository)
+	userService := userService.NewUserService(userRepository)
+
 	// controllers
-	authControllers := controllers.NewAuthControllers(authService)
-	userControllers := controller.NewUserControllers(userService)
+	authControllers := authHandler.NewAuthControllers(authService)
+	userControllers := userHandler.NewUserControllers(userService)
 
 	routes.NewRoutes(
 		authControllers,
-		userControllers
+		userControllers,
 	)
 }
