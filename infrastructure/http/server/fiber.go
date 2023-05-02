@@ -17,14 +17,26 @@ func Server() *fiber.App {
 		TimeFormat: "2 Jan 2006 15:04:05",
 	}))
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.Status(fiber.StatusOK).JSON(fiber.Map{
-			"message": "APP Boilerplate is up!!!!",
-		})
-	})
-
-	routes.AuthRoutes(app, *conf)
-	routes.UserRoutes(app, *conf)
+	initilized(app)
 
 	return app
+}
+
+func initilized(app *fiber.App) {
+	db := postgres.NewPostgres(&conf)
+	// repository
+	authRepository := repo.NewAuthRepository(db)
+	userRepository := repo.NewUserRepository(db)
+	// service
+	authService := service.NewAuthService(authRepository)
+	userService := service.NewUserService(userRepository)
+	
+	// controllers
+	authControllers := controllers.NewAuthControllers(authService)
+	userControllers := controller.NewUserControllers(userService)
+
+	routes.NewRoutes(
+		authControllers,
+		userControllers
+	)
 }
