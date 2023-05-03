@@ -2,8 +2,8 @@ package auth
 
 import (
 	"errors"
-	"project/go-fiber-boilerplate/dto"
 	"project/go-fiber-boilerplate/interfaces"
+	"project/go-fiber-boilerplate/models/dto"
 	"project/go-fiber-boilerplate/utils"
 
 	"github.com/go-playground/validator/v10"

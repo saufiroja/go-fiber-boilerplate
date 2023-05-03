@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 	"project/go-fiber-boilerplate/config"
-	"project/go-fiber-boilerplate/entity"
+	"project/go-fiber-boilerplate/models/entity"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

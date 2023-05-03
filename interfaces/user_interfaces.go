@@ -1,7 +1,7 @@
 package interfaces
 
 import (
-	"project/go-fiber-boilerplate/dto"
+	"project/go-fiber-boilerplate/models/dto"
 
 	"github.com/gofiber/fiber/v2"
 )

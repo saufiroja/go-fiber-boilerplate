@@ -1,9 +1,9 @@
 package postgres
 
 import (
-	"project/go-fiber-boilerplate/dto"
-	"project/go-fiber-boilerplate/entity"
 	"project/go-fiber-boilerplate/interfaces"
+	"project/go-fiber-boilerplate/models/dto"
+	"project/go-fiber-boilerplate/models/entity"
 
 	"gorm.io/gorm"
 )

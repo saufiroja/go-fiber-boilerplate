@@ -1,8 +1,8 @@
 package auth
 
 import (
-	"project/go-fiber-boilerplate/dto"
 	"project/go-fiber-boilerplate/interfaces"
+	"project/go-fiber-boilerplate/models/dto"
 
 	"github.com/gofiber/fiber/v2"
 )
