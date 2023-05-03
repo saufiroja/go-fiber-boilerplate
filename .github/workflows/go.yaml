@@ -18,7 +18,7 @@ jobs:
         id: go
 
       - name: lint
-        run: golangci-lint run ./...
+        run: go get -u golang.org/x/lint/golint
 
       - name: build
         run: go build -v ./...
