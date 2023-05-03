@@ -6,3 +6,6 @@ docker-up:
 
 docker-down:
 	docker-compose down
+
+build-app:
+	go build -o bin/app app/main.go
