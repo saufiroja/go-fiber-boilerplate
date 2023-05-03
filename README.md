@@ -4,6 +4,18 @@ A Starter project with Golang and Fiber
 
 # Getting Started
 
+## Features
+
+- [x] Authentication (Login, Register)
+  - [ ] Forgot Password
+  - [ ] Refresh Token
+  - [ ] Logout
+- [x] User (Get All User, Get User By ID, Update User By ID, Delete User By ID)
+  - [x] Get All User
+  - [x] Get User By ID
+  - [x] Update User By ID
+  - [x] Delete User By ID
+
 ## Prerequisites
 
 - You need to install [Golang](https://golang.org/doc/install) and [Docker](https://docs.docker.com/get-docker/) on your machine.
