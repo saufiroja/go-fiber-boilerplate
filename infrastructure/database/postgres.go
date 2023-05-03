@@ -24,7 +24,10 @@ func NewPostgres(conf *config.AppConfig) *gorm.DB {
 		log.Panic(err)
 	}
 
-	db.AutoMigrate(&entity.User{})
+	err = db.AutoMigrate(&entity.User{})
+	if err != nil {
+		log.Panic(err)
+	}
 
 	log.Println("success connect to postgresql database!")
 
