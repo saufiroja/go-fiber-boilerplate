@@ -12,20 +12,18 @@ import (
 func main() {
 	conf := config.NewAppConfig()
 	app := server.Server()
-
-	host := conf.Fiber.Host
 	port := conf.Fiber.Port
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
 
 	go func() {
-		if err := app.Listen(host + ":" + port); err != nil {
-			log.Fatalf("error when listening to %s:%s, %s", host, port, err)
+		if err := app.Listen(":" + port); err != nil {
+			log.Fatalf("error when listening to :%s, %s", port, err)
 		}
 	}()
 
-	log.Printf("server is running on %s:%s", host, port)
+	log.Printf("server is running on :%s", port)
 
 	<-stop
 

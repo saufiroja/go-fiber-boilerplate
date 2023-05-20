@@ -12,7 +12,6 @@ type AppConfig struct {
 		Env string
 	}
 	Fiber struct {
-		Host string
 		Port string
 	}
 	Postgres struct {

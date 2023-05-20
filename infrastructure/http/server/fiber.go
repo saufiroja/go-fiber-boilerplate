@@ -56,8 +56,10 @@ func initilized(app *fiber.App, conf *config.AppConfig) {
 	authControllers := authHandler.NewAuthControllers(authService)
 	userControllers := userHandler.NewUserControllers(userService)
 
-	routes.NewRoutes(
+	routes := routes.NewRoutes(
 		authControllers,
 		userControllers,
 	)
+
+	routes.InitRoutes(app)
 }
