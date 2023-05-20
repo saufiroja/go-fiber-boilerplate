@@ -3,10 +3,9 @@ services:
   app-backend:
     container_name: go-fiber-boilerplate
     build: .
+    restart: on-failure
     env_file:
       - .env
-    ports:
-      - 8080:8080
     environment:
       - HOST=${HOST}
       - PORT=${PORT}
@@ -16,24 +15,35 @@ services:
       - DB_USER=${DB_USER}
       - DB_PASS=${DB_PASS}
       - DB_NAME=${DB_NAME}
+    ports:
+      - ${PORT}:${PORT}
     volumes:
       - app-backend:/app
     depends_on:
       - postgres
+    networks:
+      - app-network
 
   postgres:
-    container_name: postgres
-    image: postgres:13.2
+    image: postgres:15-alpine
+    container_name: postgres-boilerplate
     env_file:
       - .env
-    ports:
-      - 5432:5433
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASS}
       - POSTGRES_DB=${DB_NAME}
+      - DB_HOST=${DB_HOST}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
     volumes:
       - postgres:/var/lib/postgresql/data
+    networks:
+      - app-network
+
 volumes:
   app-backend:
   postgres:
+networks:
+  app-network:
+    driver: bridge
