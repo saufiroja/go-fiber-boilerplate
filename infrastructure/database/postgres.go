@@ -16,8 +16,9 @@ func NewPostgres(conf *config.AppConfig) *gorm.DB {
 	user := conf.Postgres.User
 	pass := conf.Postgres.Pass
 	name := conf.Postgres.Name
+	ssl := conf.Postgres.Ssl
 
-	url := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable TimeZone=Asia/Jakarta", host, port, user, name, pass)
+	url := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=%s TimeZone=Asia/Jakarta", host, port, user, name, pass, ssl)
 	fmt.Println(url)
 
 	db, err := gorm.Open(postgres.Open(url), &gorm.Config{})

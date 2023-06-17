@@ -20,6 +20,7 @@ type AppConfig struct {
 		User string
 		Pass string
 		Name string
+		Ssl  string
 	}
 }
 
