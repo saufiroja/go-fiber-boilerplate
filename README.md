@@ -42,7 +42,7 @@ cd go-fiber-boilerplate
 Copy the .env_example file to .env:
 
 ```
-cp .env_example .env
+copy .env_example .env
 ```
 
 Install dependencies:
