@@ -8,17 +8,17 @@ import (
 	"gorm.io/gorm"
 )
 
-type AuthRepository struct {
+type authRepository struct {
 	DB *gorm.DB
 }
 
 func NewAuthRepository(db *gorm.DB) interfaces.AuthRepository {
-	return &AuthRepository{
+	return &authRepository{
 		DB: db,
 	}
 }
 
-func (repo *AuthRepository) Register(user *dto.Register) error {
+func (r *authRepository) Register(user *dto.Register) error {
 	data := &entity.User{
 		Email:    user.Email,
 		FullName: user.FullName,
@@ -26,7 +26,7 @@ func (repo *AuthRepository) Register(user *dto.Register) error {
 		IsMale:   user.IsMale,
 	}
 
-	err := repo.DB.Model(&entity.User{}).Create(data).Error
+	err := r.DB.Model(&entity.User{}).Create(data).Error
 	if err != nil {
 		return err
 	}
@@ -34,10 +34,10 @@ func (repo *AuthRepository) Register(user *dto.Register) error {
 	return nil
 }
 
-func (repo *AuthRepository) Login(email string) (*entity.User, error) {
+func (r *authRepository) Login(email string) (*entity.User, error) {
 	data := &entity.User{}
 
-	err := repo.DB.Model(&entity.User{}).Where("email = ?", email).First(data).Error
+	err := r.DB.Model(&entity.User{}).Where("email = ?", email).First(data).Error
 	if err != nil {
 		return nil, err
 	}

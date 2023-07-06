@@ -8,19 +8,19 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-type Service struct {
-	repo     interfaces.AuthRepository
+type authService struct {
+	repoAuth interfaces.AuthRepository
 	validate *validator.Validate
 }
 
-func NewAuthService(repo interfaces.AuthRepository) interfaces.AuthService {
-	return &Service{
-		repo:     repo,
+func NewAuthService(repoAuth interfaces.AuthRepository) interfaces.AuthService {
+	return &authService{
+		repoAuth: repoAuth,
 		validate: validator.New(),
 	}
 }
 
-func (s *Service) Register(user *dto.Register) error {
+func (s *authService) Register(user *dto.Register) error {
 	// validation
 	err := s.validate.Struct(user)
 	if err != nil {
@@ -31,10 +31,10 @@ func (s *Service) Register(user *dto.Register) error {
 	hash := utils.HashPassword(user.Password)
 	user.Password = hash
 
-	return s.repo.Register(user)
+	return s.repoAuth.Register(user)
 }
 
-func (s *Service) Login(user *dto.Login) (*dto.LoginResponse, error) {
+func (s *authService) Login(user *dto.Login) (*dto.LoginResponse, error) {
 	// validation
 	err := s.validate.Struct(user)
 	if err != nil {
@@ -42,7 +42,7 @@ func (s *Service) Login(user *dto.Login) (*dto.LoginResponse, error) {
 	}
 
 	// check email
-	res, err := s.repo.Login(user.Email)
+	res, err := s.repoAuth.Login(user.Email)
 	if err != nil {
 		return nil, utils.HandlerErrorCustom(404, "email not found")
 	}

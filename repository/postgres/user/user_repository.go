@@ -8,20 +8,20 @@ import (
 	"gorm.io/gorm"
 )
 
-type repository struct {
+type userRepository struct {
 	DB *gorm.DB
 }
 
 func NewUserRepository(db *gorm.DB) interfaces.UserRepository {
-	return &repository{
+	return &userRepository{
 		DB: db,
 	}
 }
 
-func (repo *repository) FindAllUsers() ([]dto.FindAllUsers, error) {
+func (r *userRepository) FindAllUsers() ([]dto.FindAllUsers, error) {
 	data := []dto.FindAllUsers{}
 
-	err := repo.DB.Model(&entity.User{}).Find(&data).Error
+	err := r.DB.Model(&entity.User{}).Find(&data).Error
 	if err != nil {
 		return nil, err
 	}
@@ -29,10 +29,10 @@ func (repo *repository) FindAllUsers() ([]dto.FindAllUsers, error) {
 	return data, nil
 }
 
-func (repo *repository) FindUserByID(id string) (*dto.FindUserByID, error) {
+func (r *userRepository) FindUserByID(id string) (*dto.FindUserByID, error) {
 	data := &dto.FindUserByID{}
 
-	err := repo.DB.Model(&entity.User{}).Where("id = ?", id).First(data).Error
+	err := r.DB.Model(&entity.User{}).Where("id = ?", id).First(data).Error
 	if err != nil {
 		return nil, err
 	}
@@ -40,14 +40,14 @@ func (repo *repository) FindUserByID(id string) (*dto.FindUserByID, error) {
 	return data, nil
 }
 
-func (repo *repository) UpdateUserByID(id string, user *dto.UpdateUserByID) error {
+func (r *userRepository) UpdateUserByID(id string, user *dto.UpdateUserByID) error {
 	data := &entity.User{
 		FullName: user.FullName,
 		Email:    user.Email,
 		IsMale:   user.IsMale,
 	}
 
-	err := repo.DB.Model(&entity.User{}).Where("id = ?", id).Updates(data).Error
+	err := r.DB.Model(&entity.User{}).Where("id = ?", id).Updates(data).Error
 	if err != nil {
 		return err
 	}
@@ -55,8 +55,8 @@ func (repo *repository) UpdateUserByID(id string, user *dto.UpdateUserByID) erro
 	return nil
 }
 
-func (repo *repository) DeleteUserByID(id string) error {
-	err := repo.DB.Model(&entity.User{}).Where("id = ?", id).Delete(&entity.User{}).Error
+func (r *userRepository) DeleteUserByID(id string) error {
+	err := r.DB.Model(&entity.User{}).Where("id = ?", id).Delete(&entity.User{}).Error
 	if err != nil {
 		return err
 	}

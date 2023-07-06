@@ -9,27 +9,27 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-type service struct {
-	repo     interfaces.UserRepository
+type userService struct {
+	repoUser interfaces.UserRepository
 	validate *validator.Validate
 }
 
-func NewUserService(repo interfaces.UserRepository) interfaces.UserService {
-	return &service{
-		repo:     repo,
+func NewUserService(repoUser interfaces.UserRepository) interfaces.UserService {
+	return &userService{
+		repoUser: repoUser,
 		validate: validator.New(),
 	}
 }
 
-func (s *service) FindAllUsers() ([]dto.FindAllUsers, error) {
-	return s.repo.FindAllUsers()
+func (s *userService) FindAllUsers() ([]dto.FindAllUsers, error) {
+	return s.repoUser.FindAllUsers()
 }
 
-func (s *service) FindUserByID(id string) (*dto.FindUserByID, error) {
-	return s.repo.FindUserByID(id)
+func (s *userService) FindUserByID(id string) (*dto.FindUserByID, error) {
+	return s.repoUser.FindUserByID(id)
 }
 
-func (s *service) UpdateUserByID(id string, user *dto.UpdateUserByID) error {
+func (s *userService) UpdateUserByID(id string, user *dto.UpdateUserByID) error {
 	err := s.validate.Struct(user)
 	if err != nil {
 		return utils.HandlerError(err)
@@ -40,14 +40,14 @@ func (s *service) UpdateUserByID(id string, user *dto.UpdateUserByID) error {
 		return errors.New("user not found")
 	}
 
-	return s.repo.UpdateUserByID(data.ID, user)
+	return s.repoUser.UpdateUserByID(data.ID, user)
 }
 
-func (s *service) DeleteUserByID(id string) error {
+func (s *userService) DeleteUserByID(id string) error {
 	data, err := s.FindUserByID(id)
 	if err != nil {
 		return errors.New("user not found")
 	}
 
-	return s.repo.DeleteUserByID(data.ID)
+	return s.repoUser.DeleteUserByID(data.ID)
 }

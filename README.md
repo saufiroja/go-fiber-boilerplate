@@ -2,19 +2,11 @@
 
 A Starter project with Golang and Fiber
 
+```
+routes -> handler -> service -> repository -> database
+```
+
 # Getting Started
-
-## Features
-
-- [x] Authentication (Login, Register)
-  - [ ] Forgot Password
-  - [ ] Refresh Token
-  - [ ] Logout
-- [x] User (Get All User, Get User By ID, Update User By ID, Delete User By ID)
-  - [x] Get All User
-  - [x] Get User By ID
-  - [x] Update User By ID
-  - [x] Delete User By ID
 
 ## Prerequisites
 
@@ -74,7 +66,9 @@ An example of implementing a hexagonal architecture backend using golang.
 
 ```
 .
-.
+├── .github/
+│   └── workflows/
+│       └── go.yaml
 ├── app/
 │   └── main.go
 ├── config/
@@ -82,16 +76,18 @@ An example of implementing a hexagonal architecture backend using golang.
 │   ├── config.go
 │   ├── fiber.go
 │   └── postgres.go
-├── infratructure/
+├── infrastructure/
 │   ├── database/
-│   │   ├── postgres.go
-│   │   └── mongo.go
+│   │   ├── mongo.go
+│   │   └── postgres.go
 │   └── http/
 │       ├── handler/
 │       │   ├── auth/
-│       │   │   └── auth_handler.go
+│       │   │   ├── auth_handler.go
+│       │   │   └── routes.go
 │       │   └── user/
-│       │       └── user_handler.go
+│       │       ├── user_handler.go
+│       │       └── routes.go
 │       ├── middlewares/
 │       │   └── jwt_middlewares.go
 │       ├── routes/
@@ -108,8 +104,10 @@ An example of implementing a hexagonal architecture backend using golang.
 │       └── user_entity.go
 ├── repository/
 │   └── postgres/
-│       ├── auth_repository_postgres.go
-│       └── user_repository_postgres.go
+│       ├── auth/
+│       │   └── auth_repository.go
+│       └── user/
+│           └── user_repository.go
 ├── service/
 │   ├── auth/
 │   │   └── auth_service.go
@@ -117,7 +115,7 @@ An example of implementing a hexagonal architecture backend using golang.
 │       └── user_service.go
 ├── utils/
 │   ├── generate_token.go
-│   ├── handlerError.go
+│   ├── handler_error.go
 │   └── password.go
 ├── .env
 ├── .env.example
@@ -129,4 +127,73 @@ An example of implementing a hexagonal architecture backend using golang.
 ├── LICENCE
 ├── Makefile
 └── README.md
+```
+
+# Example or Usage
+
+## Interface
+
+```go
+
+type AuthRepository interface {
+	Register(user *dto.Register) error
+	Login(email string) (*entity.User, error)
+}
+
+type AuthService interface {
+	Register(user *dto.Register) error
+	Login(user *dto.Login) (*dto.LoginResponse, error)
+}
+
+type NewAuthHandler interface {
+	Register(c *fiber.Ctx) error
+	Login(c *fiber.Ctx) error
+}
+
+```
+
+## Repository
+
+```go
+
+type authRepository struct {
+	DB *gorm.DB
+}
+
+func NewAuthRepository(db *gorm.DB) interfaces.AuthRepository {
+	return &authRepository{
+		DB: db,
+	}
+}
+
+```
+
+## Service
+
+```go
+type authService struct {
+	repoAuth interfaces.AuthRepository
+	validate *validator.Validate
+}
+
+func NewAuthService(repoAuth interfaces.AuthRepository) interfaces.AuthService {
+	return &authService{
+		repoAuth: repoAuth,
+		validate: validator.New(),
+	}
+}
+```
+
+## Handler
+
+```go
+type authHandler struct {
+	authService interfaces.AuthService
+}
+
+func NewAuthHandler(authService interfaces.AuthService) interfaces.NewAuthHandler {
+	return &authHandler{
+		authService: authService,
+	}
+}
 ```

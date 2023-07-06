@@ -7,17 +7,17 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type Handler struct {
+type userHandler struct {
 	userService interfaces.UserService
 }
 
 func NewUserHandler(userService interfaces.UserService) interfaces.UserHandler {
-	return &Handler{
+	return &userHandler{
 		userService: userService,
 	}
 }
 
-func (h *Handler) FindAllUsers(c *fiber.Ctx) error {
+func (h *userHandler) FindAllUsers(c *fiber.Ctx) error {
 	users, err := h.userService.FindAllUsers()
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{
@@ -33,7 +33,7 @@ func (h *Handler) FindAllUsers(c *fiber.Ctx) error {
 	})
 }
 
-func (h *Handler) FindUserByID(c *fiber.Ctx) error {
+func (h *userHandler) FindUserByID(c *fiber.Ctx) error {
 	id := c.Params("id")
 
 	user, err := h.userService.FindUserByID(id)
@@ -51,7 +51,7 @@ func (h *Handler) FindUserByID(c *fiber.Ctx) error {
 	})
 }
 
-func (h *Handler) UpdateUserByID(c *fiber.Ctx) error {
+func (h *userHandler) UpdateUserByID(c *fiber.Ctx) error {
 	id := c.Params("id")
 
 	data := &dto.UpdateUserByID{}
@@ -78,7 +78,7 @@ func (h *Handler) UpdateUserByID(c *fiber.Ctx) error {
 	})
 }
 
-func (h *Handler) DeleteUserByID(c *fiber.Ctx) error {
+func (h *userHandler) DeleteUserByID(c *fiber.Ctx) error {
 	id := c.Params("id")
 
 	err := h.userService.DeleteUserByID(id)

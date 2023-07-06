@@ -7,17 +7,17 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type Handler struct {
+type authHandler struct {
 	authService interfaces.AuthService
 }
 
 func NewAuthHandler(authService interfaces.AuthService) interfaces.NewAuthHandler {
-	return &Handler{
+	return &authHandler{
 		authService: authService,
 	}
 }
 
-func (h *Handler) Register(c *fiber.Ctx) error {
+func (h *authHandler) Register(c *fiber.Ctx) error {
 	data := &dto.Register{}
 
 	err := c.BodyParser(data)
@@ -42,7 +42,7 @@ func (h *Handler) Register(c *fiber.Ctx) error {
 	})
 }
 
-func (h *Handler) Login(c *fiber.Ctx) error {
+func (h *authHandler) Login(c *fiber.Ctx) error {
 	req := &dto.Login{}
 
 	err := c.BodyParser(req)
