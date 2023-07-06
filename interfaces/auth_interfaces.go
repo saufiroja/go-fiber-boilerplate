@@ -17,7 +17,7 @@ type AuthService interface {
 	Login(user *dto.Login) (*dto.LoginResponse, error)
 }
 
-type AuthControllers interface {
+type NewAuthHandler interface {
 	Register(c *fiber.Ctx) error
 	Login(c *fiber.Ctx) error
 }

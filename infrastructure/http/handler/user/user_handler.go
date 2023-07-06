@@ -7,18 +7,18 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type Controllers struct {
-	service interfaces.UserService
+type Handler struct {
+	userService interfaces.UserService
 }
 
-func NewUserControllers(service interfaces.UserService) interfaces.UserControllers {
-	return &Controllers{
-		service: service,
+func NewUserHandler(userService interfaces.UserService) interfaces.UserHandler {
+	return &Handler{
+		userService: userService,
 	}
 }
 
-func (controller *Controllers) FindAllUsers(c *fiber.Ctx) error {
-	users, err := controller.service.FindAllUsers()
+func (h *Handler) FindAllUsers(c *fiber.Ctx) error {
+	users, err := h.userService.FindAllUsers()
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{
 			"code":    "400",
@@ -33,10 +33,10 @@ func (controller *Controllers) FindAllUsers(c *fiber.Ctx) error {
 	})
 }
 
-func (controller *Controllers) FindUserByID(c *fiber.Ctx) error {
+func (h *Handler) FindUserByID(c *fiber.Ctx) error {
 	id := c.Params("id")
 
-	user, err := controller.service.FindUserByID(id)
+	user, err := h.userService.FindUserByID(id)
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{
 			"code":    "400",
@@ -51,7 +51,7 @@ func (controller *Controllers) FindUserByID(c *fiber.Ctx) error {
 	})
 }
 
-func (controller *Controllers) UpdateUserByID(c *fiber.Ctx) error {
+func (h *Handler) UpdateUserByID(c *fiber.Ctx) error {
 	id := c.Params("id")
 
 	data := &dto.UpdateUserByID{}
@@ -64,7 +64,7 @@ func (controller *Controllers) UpdateUserByID(c *fiber.Ctx) error {
 		})
 	}
 
-	err = controller.service.UpdateUserByID(id, data)
+	err = h.userService.UpdateUserByID(id, data)
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{
 			"code":    "400",
@@ -78,10 +78,10 @@ func (controller *Controllers) UpdateUserByID(c *fiber.Ctx) error {
 	})
 }
 
-func (controller *Controllers) DeleteUserByID(c *fiber.Ctx) error {
+func (h *Handler) DeleteUserByID(c *fiber.Ctx) error {
 	id := c.Params("id")
 
-	err := controller.service.DeleteUserByID(id)
+	err := h.userService.DeleteUserByID(id)
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{
 			"code":    "400",

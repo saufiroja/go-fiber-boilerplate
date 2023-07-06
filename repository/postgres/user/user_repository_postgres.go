@@ -1,4 +1,4 @@
-package postgres
+package user
 
 import (
 	"project/go-fiber-boilerplate/interfaces"

@@ -20,7 +20,7 @@ type UserService interface {
 	DeleteUserByID(id string) error
 }
 
-type UserControllers interface {
+type UserHandler interface {
 	FindAllUsers(c *fiber.Ctx) error
 	FindUserByID(c *fiber.Ctx) error
 	UpdateUserByID(c *fiber.Ctx) error

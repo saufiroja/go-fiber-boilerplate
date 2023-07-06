@@ -7,17 +7,17 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type Controllers struct {
-	service interfaces.AuthService
+type Handler struct {
+	authService interfaces.AuthService
 }
 
-func NewAuthControllers(service interfaces.AuthService) interfaces.AuthControllers {
-	return &Controllers{
-		service: service,
+func NewAuthHandler(authService interfaces.AuthService) interfaces.NewAuthHandler {
+	return &Handler{
+		authService: authService,
 	}
 }
 
-func (controllers *Controllers) Register(c *fiber.Ctx) error {
+func (h *Handler) Register(c *fiber.Ctx) error {
 	data := &dto.Register{}
 
 	err := c.BodyParser(data)
@@ -28,7 +28,7 @@ func (controllers *Controllers) Register(c *fiber.Ctx) error {
 		})
 	}
 
-	err = controllers.service.Register(data)
+	err = h.authService.Register(data)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"code":    400,
@@ -42,7 +42,7 @@ func (controllers *Controllers) Register(c *fiber.Ctx) error {
 	})
 }
 
-func (controller *Controllers) Login(c *fiber.Ctx) error {
+func (h *Handler) Login(c *fiber.Ctx) error {
 	req := &dto.Login{}
 
 	err := c.BodyParser(req)
@@ -53,7 +53,7 @@ func (controller *Controllers) Login(c *fiber.Ctx) error {
 		})
 	}
 
-	token, err := controller.service.Login(req)
+	token, err := h.authService.Login(req)
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{
 			"code":    "400",
