@@ -6,6 +6,12 @@ A Starter project with Golang and Fiber
 routes -> handler -> service -> repository -> database
 ```
 
+In folder infrastructure you can also add other methods such as gRPC, GraphQL, etc. </br>
+You can add with folder name grpc, graphql, etc. </br>
+</br>
+In folder infrastructure you can also add other connection like aws, sendgrid, cloudinary, etc. </br>
+You can add with folder name aws, sendgrid, cloudinary, etc. </br>
+
 # Getting Started
 
 ## Prerequisites
