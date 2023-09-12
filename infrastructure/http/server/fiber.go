@@ -2,7 +2,9 @@ package server
 
 import (
 	"project/go-fiber-boilerplate/config"
-	"project/go-fiber-boilerplate/infrastructure/http/routes"
+	"project/go-fiber-boilerplate/infrastructure/database"
+	"project/go-fiber-boilerplate/infrastructure/http/handler/auth"
+	"project/go-fiber-boilerplate/infrastructure/http/handler/user"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -12,6 +14,8 @@ import (
 func Server() *fiber.App {
 	conf := config.NewAppConfig()
 	app := fiber.New()
+
+	db := database.NewPostgres(conf)
 
 	app.Use(cors.New(cors.Config{
 		AllowOrigins:     "*",
@@ -33,7 +37,8 @@ func Server() *fiber.App {
 	})
 
 	// routes
-	routes.NewRoutes(app, conf)
+	auth.NewAuthRoutes(app, conf, db)
+	user.NewUserRoutes(app, conf, db)
 
 	return app
 }

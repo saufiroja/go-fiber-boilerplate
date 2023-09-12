@@ -2,20 +2,19 @@ package user
 
 import (
 	"project/go-fiber-boilerplate/config"
-	"project/go-fiber-boilerplate/infrastructure/database"
 	"project/go-fiber-boilerplate/infrastructure/http/middlewares"
 	repo "project/go-fiber-boilerplate/repository/postgres/user"
 	service "project/go-fiber-boilerplate/service/user"
 
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 )
 
-func NewUserRoutes(app *fiber.App, conf *config.AppConfig) {
-	// config
-	db := database.NewPostgres(conf)
-
+func NewUserRoutes(app *fiber.App, conf *config.AppConfig, db *gorm.DB) {
 	repoUser := repo.NewUserRepository(db)
+
 	serviceUser := service.NewUserService(repoUser)
+
 	handlerUser := NewUserHandler(serviceUser)
 
 	// routes
