@@ -7,7 +7,13 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-func GenerateAccessToken(id, email, fullname string) (string, int64, error) {
+type GenerateToken struct{}
+
+func NewGenerateToken() *GenerateToken {
+	return &GenerateToken{}
+}
+
+func (g *GenerateToken) GenerateAccessToken(id, email, fullname string) (string, int64, error) {
 	secret := os.Getenv("JWT_SECRET")
 	expired := time.Now().Add(time.Hour * 24).Unix()
 
@@ -26,7 +32,7 @@ func GenerateAccessToken(id, email, fullname string) (string, int64, error) {
 	return tokenString, expired, nil
 }
 
-func GenerateRefreshToken(id, email, fullname string) (string, int64, error) {
+func (g *GenerateToken) GenerateRefreshToken(id, email, fullname string) (string, int64, error) {
 	secret := os.Getenv("JWT_SECRET")
 
 	expired := time.Now().Add(time.Hour * 24 * 7).Unix()

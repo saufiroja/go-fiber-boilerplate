@@ -11,12 +11,16 @@ import (
 type authService struct {
 	repoAuth interfaces.UserRepository
 	validate *validator.Validate
+	token    *utils.GenerateToken
+	password *utils.Password
 }
 
-func NewAuthService(repoAuth interfaces.UserRepository) interfaces.AuthService {
+func NewAuthService(repoAuth interfaces.UserRepository, token *utils.GenerateToken, password *utils.Password) interfaces.AuthService {
 	return &authService{
 		repoAuth: repoAuth,
 		validate: validator.New(),
+		token:    token,
+		password: password,
 	}
 }
 
@@ -28,7 +32,7 @@ func (s *authService) Register(user *dto.Register) error {
 	}
 
 	// hash password
-	hash := utils.HashPassword(user.Password)
+	hash := s.password.HashPassword(user.Password)
 	user.Password = hash
 
 	return s.repoAuth.InsertUser(user)
@@ -47,17 +51,17 @@ func (s *authService) Login(user *dto.Login) (*dto.LoginResponse, error) {
 		return nil, utils.HandlerErrorCustom(404, "email not found")
 	}
 
-	err = utils.ComparePassword(res.Password, user.Password)
+	err = s.password.ComparePassword(res.Password, user.Password)
 	if err != nil {
 		return nil, utils.HandlerErrorCustom(400, "wrong password")
 	}
 
-	accessToken, expiredAccessToken, err := utils.GenerateAccessToken(res.ID, res.Email, res.FullName)
+	accessToken, expiredAccessToken, err := s.token.GenerateAccessToken(res.ID, res.Email, res.FullName)
 	if err != nil {
 		return nil, utils.HandlerErrorCustom(500, "failed to generate access token")
 	}
 
-	refreshToken, expiredRefreshToken, err := utils.GenerateRefreshToken(res.ID, res.Email, res.FullName)
+	refreshToken, expiredRefreshToken, err := s.token.GenerateRefreshToken(res.ID, res.Email, res.FullName)
 	if err != nil {
 		return nil, utils.HandlerErrorCustom(500, "failed to generate refresh token")
 	}
