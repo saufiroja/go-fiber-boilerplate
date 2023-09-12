@@ -1,4 +1,4 @@
-run:
+dev:
 	go run ./app/main.go
 
 docker-up:

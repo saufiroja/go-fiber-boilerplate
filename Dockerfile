@@ -1,6 +1,6 @@
 FROM golang:1.21-alpine AS builder
 
-RUN apk update && apk add --no-cache git
+RUN apk add --no-cache make git gcc libc-dev
 
 WORKDIR /app
 
@@ -21,4 +21,4 @@ WORKDIR /app
 COPY --from=builder /app/myapp /app/app
 COPY --from=builder /app/models/migrations /app/models/migrations
 
-CMD ["./app"]
+CMD ["make", "dev"]
