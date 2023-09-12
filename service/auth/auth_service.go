@@ -9,11 +9,11 @@ import (
 )
 
 type authService struct {
-	repoAuth interfaces.AuthRepository
+	repoAuth interfaces.UserRepository
 	validate *validator.Validate
 }
 
-func NewAuthService(repoAuth interfaces.AuthRepository) interfaces.AuthService {
+func NewAuthService(repoAuth interfaces.UserRepository) interfaces.AuthService {
 	return &authService{
 		repoAuth: repoAuth,
 		validate: validator.New(),
@@ -31,7 +31,7 @@ func (s *authService) Register(user *dto.Register) error {
 	hash := utils.HashPassword(user.Password)
 	user.Password = hash
 
-	return s.repoAuth.Register(user)
+	return s.repoAuth.InsertUser(user)
 }
 
 func (s *authService) Login(user *dto.Login) (*dto.LoginResponse, error) {
@@ -42,7 +42,7 @@ func (s *authService) Login(user *dto.Login) (*dto.LoginResponse, error) {
 	}
 
 	// check email
-	res, err := s.repoAuth.Login(user.Email)
+	res, err := s.repoAuth.FindUserByEmail(user.Email)
 	if err != nil {
 		return nil, utils.HandlerErrorCustom(404, "email not found")
 	}

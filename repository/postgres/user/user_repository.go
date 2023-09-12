@@ -63,3 +63,30 @@ func (r *userRepository) DeleteUserByID(id string) error {
 
 	return nil
 }
+
+func (r *userRepository) InsertUser(user *dto.Register) error {
+	data := &entity.User{
+		Email:    user.Email,
+		FullName: user.FullName,
+		Password: user.Password,
+		IsMale:   user.IsMale,
+	}
+
+	err := r.DB.Model(&entity.User{}).Create(data).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *userRepository) FindUserByEmail(email string) (*entity.User, error) {
+	data := &entity.User{}
+
+	err := r.DB.Model(&entity.User{}).Where("email = ?", email).First(data).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}

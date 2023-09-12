@@ -2,6 +2,7 @@ package interfaces
 
 import (
 	"project/go-fiber-boilerplate/models/dto"
+	"project/go-fiber-boilerplate/models/entity"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -11,6 +12,8 @@ type UserRepository interface {
 	FindUserByID(id string) (*dto.FindUserByID, error)
 	UpdateUserByID(id string, user *dto.UpdateUserByID) error
 	DeleteUserByID(id string) error
+	InsertUser(user *dto.Register) error
+	FindUserByEmail(email string) (*entity.User, error)
 }
 
 type UserService interface {

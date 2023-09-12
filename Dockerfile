@@ -1,15 +1,24 @@
-FROM golang:1.19-alpine
+FROM golang:1.21-alpine AS builder
+
+RUN apk update && apk add --no-cache git
 
 WORKDIR /app
 
 COPY go.mod go.sum ./
-
-RUN go mod tidy
+RUN go mod download
 
 COPY . .
 
-RUN go build -o main .
+RUN CGO_ENABLED=0 GOOS=linux go build -o myapp
 
-EXPOSE 8080
+# Path: Dockerfile
+FROM alpine:latest
 
-CMD ["make", "run"]
+RUN apk update && apk add --no-cache ca-certificates
+
+WORKDIR /app
+
+COPY --from=builder /app/myapp /app/app
+COPY --from=builder /app/models/migrations /app/models/migrations
+
+CMD ["./app"]
