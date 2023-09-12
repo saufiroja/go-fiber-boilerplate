@@ -19,6 +19,5 @@ RUN apk update && apk add --no-cache ca-certificates
 WORKDIR /app
 
 COPY --from=builder /app/myapp /app/app
-COPY --from=builder /app/models/migrations /app/models/migrations
 
-CMD ["make", "dev"]
+CMD ["./app"]

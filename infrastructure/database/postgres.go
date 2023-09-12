@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"project/go-fiber-boilerplate/config"
-	"project/go-fiber-boilerplate/models/entity"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -19,14 +18,19 @@ func NewPostgres(conf *config.AppConfig) *gorm.DB {
 	ssl := conf.Postgres.Ssl
 
 	url := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=%s TimeZone=Asia/Jakarta", host, port, user, name, pass, ssl)
-	fmt.Println(url)
 
 	db, err := gorm.Open(postgres.Open(url), &gorm.Config{})
 	if err != nil {
 		log.Panic(err)
 	}
 
-	err = db.AutoMigrate(&entity.User{})
+	// ping to database
+	sqlDB, err := db.DB()
+	if err != nil {
+		log.Panic(err)
+	}
+
+	err = sqlDB.Ping()
 	if err != nil {
 		log.Panic(err)
 	}
