@@ -141,9 +141,9 @@ An example of implementing a hexagonal architecture backend using golang.
 
 ```go
 
-type AuthRepository interface {
-	Register(user *dto.Register) error
-	Login(email string) (*entity.User, error)
+type UserRepository interface {
+	InsertUser(user *dto.Register) error
+	FindUserByEmail(email string) (*entity.User, error)
 }
 
 type AuthService interface {
@@ -178,7 +178,7 @@ func NewAuthRepository(db *gorm.DB) interfaces.AuthRepository {
 
 ```go
 type authService struct {
-	repoAuth interfaces.AuthRepository
+	repoAuth interfaces.UserRepository
 	validate *validator.Validate
 }
 
