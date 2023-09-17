@@ -41,6 +41,14 @@ services:
       - postgres:/var/lib/postgresql/data
     networks:
       - app-backend
+  nginx:
+    build: ./nginx
+    ports:
+      - '80:80'
+    depends_on:
+      - app-backend
+    networks:
+      - app-backend
 
 volumes:
   app-backend:
