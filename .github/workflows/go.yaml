@@ -21,4 +21,4 @@ jobs:
         run: go get -u golang.org/x/lint/golint
 
       - name: build
-        run: go build -o bin/app app/main.go
+        run: go build -o bin/app main.go
