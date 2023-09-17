@@ -7,14 +7,15 @@ services:
     env_file:
       - .env
     environment:
-      - HOST=${HOST}
       - PORT=${PORT}
+      - JWT_SECRET=${JWT_SECRET}
       - GO_ENV=${GO_ENV}
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
       - DB_USER=${DB_USER}
       - DB_PASS=${DB_PASS}
       - DB_NAME=${DB_NAME}
+      - DB_SSL=${DB_SSL}
     ports:
       - ${PORT}:${PORT}
     volumes:
@@ -22,10 +23,10 @@ services:
     depends_on:
       - postgres
     networks:
-      - app-network
+      - app-backend
 
   postgres:
-    image: postgres:15-alpine
+    image: postgres:15
     container_name: postgres-boilerplate
     env_file:
       - .env
@@ -33,17 +34,17 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASS}
       - POSTGRES_DB=${DB_NAME}
-      - DB_HOST=${DB_HOST}
+      - DATABASE_HOST=${DB_HOST}
     ports:
-      - ${DB_PORT}:5432
+      - 5432:5432
     volumes:
       - postgres:/var/lib/postgresql/data
     networks:
-      - app-network
+      - app-backend
 
 volumes:
   app-backend:
   postgres:
 networks:
-  app-network:
+  app-backend:
     driver: bridge
