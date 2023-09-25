@@ -96,8 +96,6 @@ An example of implementing a hexagonal architecture backend using golang.
 │       │       └── routes.go
 │       ├── middlewares/
 │       │   └── jwt_middlewares.go
-│       ├── routes/
-│       │   └── routes.go
 │       └── server/
 │           └── fiber.go
 ├── interfaces/
