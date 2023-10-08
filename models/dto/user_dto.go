@@ -1,10 +1,13 @@
 package dto
 
 type Register struct {
-	FullName string `json:"full_name" validate:"required,min=3,max=50"`
-	Email    string `json:"email" validate:"required,email"`
-	Password string `json:"password" validate:"required,min=6"`
-	IsMale   bool   `json:"is_male"`
+	ID        string `json:"id"`
+	FullName  string `json:"full_name" validate:"required,min=3,max=50"`
+	Email     string `json:"email" validate:"required,email"`
+	Password  string `json:"password" validate:"required,min=6"`
+	IsMale    bool   `json:"is_male"`
+	CreatedAt int64  `json:"created_at"`
+	UpdatedAt int64  `json:"updated_at"`
 }
 
 type Login struct {
@@ -36,7 +39,8 @@ type FindUserByID struct {
 }
 
 type UpdateUserByID struct {
-	FullName string `json:"full_name" validate:"required,min=3,max=50"`
-	Email    string `json:"email" validate:"required,email"`
-	IsMale   bool   `json:"is_male"`
+	FullName  string `json:"full_name" validate:"required,min=3,max=50"`
+	Email     string `json:"email" validate:"required,email"`
+	IsMale    bool   `json:"is_male"`
+	UpdatedAt int64  `json:"updated_at"`
 }

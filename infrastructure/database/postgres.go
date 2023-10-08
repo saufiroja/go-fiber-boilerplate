@@ -1,15 +1,16 @@
 package database
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"project/go-fiber-boilerplate/config"
+	"time"
 
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
+	_ "github.com/lib/pq"
 )
 
-func NewPostgres(conf *config.AppConfig) *gorm.DB {
+func NewPostgres(conf *config.AppConfig) *sql.DB {
 	host := conf.Postgres.Host
 	port := conf.Postgres.Port
 	user := conf.Postgres.User
@@ -17,25 +18,20 @@ func NewPostgres(conf *config.AppConfig) *gorm.DB {
 	name := conf.Postgres.Name
 	ssl := conf.Postgres.Ssl
 
-	url := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=%s TimeZone=Asia/Jakarta", host, port, user, name, pass, ssl)
+	url := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s", host, port, user, pass, name, ssl)
 
-	db, err := gorm.Open(postgres.Open(url), &gorm.Config{})
+	db, err := sql.Open("postgres", url)
 	if err != nil {
-		log.Panic(err)
+		panic(err)
 	}
 
-	// ping to database
-	sqlDB, err := db.DB()
-	if err != nil {
-		log.Panic(err)
-	}
+	// connection pool
+	db.SetMaxIdleConns(10)
+	db.SetMaxOpenConns(100)
+	db.SetConnMaxIdleTime(5 * time.Minute)
+	db.SetConnMaxLifetime(60 * time.Minute)
 
-	err = sqlDB.Ping()
-	if err != nil {
-		log.Panic(err)
-	}
-
-	log.Println("success connect to postgresql database!")
+	log.Println("connected to database")
 
 	return db
 }

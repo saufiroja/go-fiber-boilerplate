@@ -15,7 +15,7 @@ func MiddlewaresUser(c *fiber.Ctx) error {
 
 	if accessToken == "" && refreshToken == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"code":    "401",
+			"code":    401,
 			"message": "Unauthorized",
 		})
 	}
@@ -30,7 +30,7 @@ func MiddlewaresUser(c *fiber.Ctx) error {
 
 		if err != nil {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-				"code":    "401",
+				"code":    401,
 				"message": "Unauthorized",
 			})
 		}
@@ -53,7 +53,7 @@ func MiddlewaresUser(c *fiber.Ctx) error {
 
 		if err != nil {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-				"code":    "401",
+				"code":    401,
 				"message": "Unauthorized",
 			})
 		}
@@ -67,7 +67,7 @@ func MiddlewaresUser(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-		"code":    "401",
+		"code":    401,
 		"message": "Unauthorized",
 	})
 }

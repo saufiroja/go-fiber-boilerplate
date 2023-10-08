@@ -48,7 +48,7 @@ func (h *authHandler) Login(c *fiber.Ctx) error {
 	err := c.BodyParser(req)
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{
-			"code":    "400",
+			"code":    400,
 			"message": err.Error(),
 		})
 	}
@@ -56,7 +56,7 @@ func (h *authHandler) Login(c *fiber.Ctx) error {
 	token, err := h.authService.Login(req)
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{
-			"code":    "400",
+			"code":    400,
 			"message": err.Error(),
 		})
 	}
@@ -78,7 +78,7 @@ func (h *authHandler) Login(c *fiber.Ctx) error {
 	})
 
 	return c.Status(200).JSON(fiber.Map{
-		"code":    "200",
+		"code":    200,
 		"message": "login success",
 		"result":  token,
 	})

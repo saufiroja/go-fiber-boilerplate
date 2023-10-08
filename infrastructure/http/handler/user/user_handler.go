@@ -21,13 +21,13 @@ func (h *userHandler) FindAllUsers(c *fiber.Ctx) error {
 	users, err := h.userService.FindAllUsers()
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{
-			"code":    "400",
+			"code":    400,
 			"message": err.Error(),
 		})
 	}
 
 	return c.Status(200).JSON(fiber.Map{
-		"code":    "200",
+		"code":    200,
 		"message": "success get all users",
 		"result":  users,
 	})
@@ -39,13 +39,13 @@ func (h *userHandler) FindUserByID(c *fiber.Ctx) error {
 	user, err := h.userService.FindUserByID(id)
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{
-			"code":    "400",
+			"code":    400,
 			"message": err.Error(),
 		})
 	}
 
 	return c.Status(200).JSON(fiber.Map{
-		"code":    "200",
+		"code":    200,
 		"message": "success get user by id",
 		"result":  user,
 	})
@@ -59,7 +59,7 @@ func (h *userHandler) UpdateUserByID(c *fiber.Ctx) error {
 	err := c.BodyParser(data)
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{
-			"code":    "400",
+			"code":    400,
 			"message": err.Error(),
 		})
 	}
@@ -67,13 +67,13 @@ func (h *userHandler) UpdateUserByID(c *fiber.Ctx) error {
 	err = h.userService.UpdateUserByID(id, data)
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{
-			"code":    "400",
+			"code":    400,
 			"message": err.Error(),
 		})
 	}
 
 	return c.Status(200).JSON(fiber.Map{
-		"code":    "200",
+		"code":    200,
 		"message": "success update user by id",
 	})
 }
@@ -84,13 +84,13 @@ func (h *userHandler) DeleteUserByID(c *fiber.Ctx) error {
 	err := h.userService.DeleteUserByID(id)
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{
-			"code":    "400",
+			"code":    400,
 			"message": err.Error(),
 		})
 	}
 
 	return c.Status(200).JSON(fiber.Map{
-		"code":    "200",
+		"code":    200,
 		"message": "success delete user by id",
 	})
 }

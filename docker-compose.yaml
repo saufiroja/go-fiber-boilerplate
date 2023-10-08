@@ -34,17 +34,18 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASS}
       - POSTGRES_DB=${DB_NAME}
-      - DATABASE_HOST=${DB_HOST}
+      - POSTGRES_HOST_AUTH_METHOD=trust
     ports:
       - 5432:5432
     volumes:
       - postgres:/var/lib/postgresql/data
+      - ./initdb.d/migrations:/docker-entrypoint-initdb.d/
     networks:
       - app-backend
   nginx:
     build: ./nginx
     ports:
-      - '80:80'
+      - '90:80'
     depends_on:
       - app-backend
     networks:
