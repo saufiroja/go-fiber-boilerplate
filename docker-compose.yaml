@@ -1,6 +1,7 @@
 version: '3'
 services:
   app-backend:
+    image: go-fiber-boilerplate:1.0.0
     container_name: go-fiber-boilerplate
     build: .
     restart: on-failure
