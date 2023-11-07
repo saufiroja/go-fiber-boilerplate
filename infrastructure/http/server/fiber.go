@@ -5,6 +5,7 @@ import (
 	"project/go-fiber-boilerplate/infrastructure/database"
 	"project/go-fiber-boilerplate/infrastructure/http/handler/auth"
 	"project/go-fiber-boilerplate/infrastructure/http/handler/user"
+	"project/go-fiber-boilerplate/utils/constants"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -24,16 +25,12 @@ func Server() *fiber.App {
 		AllowCredentials: true,
 	}))
 
-	app.Use(logger.New(logger.Config{
-		Format:     "[${time}] [${ip}:${port}] ${status} - ${latency} ${method} ${path}\n",
-		TimeFormat: "2 Jan 2006 15:04:05",
-	}))
+	app.Use(logger.New(logger.ConfigDefault))
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.Status(200).JSON(fiber.Map{
-			"code":    200,
-			"message": "API is running",
-		})
+		return c.Status(200).JSON(
+			constants.NewSuccess("welcome to go fiber boilerplate", nil),
+		)
 	})
 
 	// routes

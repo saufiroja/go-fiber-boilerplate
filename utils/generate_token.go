@@ -2,6 +2,7 @@ package utils
 
 import (
 	"os"
+	"project/go-fiber-boilerplate/utils/constants"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -26,7 +27,7 @@ func (g *GenerateToken) GenerateAccessToken(id, email, fullname string) (string,
 
 	tokenString, err := token.SignedString([]byte(secret))
 	if err != nil {
-		return "", 0, err
+		return "", 0, constants.NewBadRequestError(err.Error())
 	}
 
 	return tokenString, expired, nil
@@ -46,7 +47,7 @@ func (g *GenerateToken) GenerateRefreshToken(id, email, fullname string) (string
 
 	tokenString, err := token.SignedString([]byte(secret))
 	if err != nil {
-		return "", 0, err
+		return "", 0, constants.NewBadRequestError(err.Error())
 	}
 
 	return tokenString, expired, nil

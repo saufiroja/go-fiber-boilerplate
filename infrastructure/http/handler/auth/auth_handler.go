@@ -3,6 +3,7 @@ package auth
 import (
 	"project/go-fiber-boilerplate/interfaces"
 	"project/go-fiber-boilerplate/models/dto"
+	"project/go-fiber-boilerplate/utils/constants"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -22,24 +23,19 @@ func (h *authHandler) Register(c *fiber.Ctx) error {
 
 	err := c.BodyParser(data)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"code":    400,
-			"message": err.Error(),
-		})
+		return c.Status(fiber.StatusBadRequest).JSON(
+			constants.NewBadRequestError(err.Error()),
+		)
 	}
 
 	err = h.authService.Register(data)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"code":    400,
-			"message": err.Error(),
-		})
+		return c.Status(400).JSON(err)
 	}
 
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"code":    200,
-		"message": "register success",
-	})
+	return c.Status(201).JSON(
+		constants.NewCreated("register success", nil),
+	)
 }
 
 func (h *authHandler) Login(c *fiber.Ctx) error {
@@ -47,18 +43,12 @@ func (h *authHandler) Login(c *fiber.Ctx) error {
 
 	err := c.BodyParser(req)
 	if err != nil {
-		return c.Status(400).JSON(fiber.Map{
-			"code":    400,
-			"message": err.Error(),
-		})
+		return c.Status(400).JSON(err)
 	}
 
 	token, err := h.authService.Login(req)
 	if err != nil {
-		return c.Status(400).JSON(fiber.Map{
-			"code":    400,
-			"message": err.Error(),
-		})
+		return c.Status(400).JSON(err)
 	}
 
 	c.Cookie(&fiber.Cookie{

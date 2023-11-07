@@ -1,23 +1,20 @@
 package user
 
 import (
-	"errors"
 	"project/go-fiber-boilerplate/interfaces"
 	"project/go-fiber-boilerplate/models/dto"
-	"project/go-fiber-boilerplate/utils"
-
-	"github.com/go-playground/validator/v10"
+	"project/go-fiber-boilerplate/utils/constants"
 )
 
 type userService struct {
 	repoUser interfaces.UserRepository
-	validate *validator.Validate
+	validate constants.IValidation
 }
 
-func NewUserService(repoUser interfaces.UserRepository) interfaces.UserService {
+func NewUserService(repoUser interfaces.UserRepository, validate constants.IValidation) interfaces.UserService {
 	return &userService{
 		repoUser: repoUser,
-		validate: validator.New(),
+		validate: validate,
 	}
 }
 
@@ -26,18 +23,23 @@ func (s *userService) FindAllUsers() ([]dto.FindAllUsers, error) {
 }
 
 func (s *userService) FindUserByID(id string) (*dto.FindUserByID, error) {
-	return s.repoUser.FindUserByID(id)
+	res, err := s.repoUser.FindUserByID(id)
+	if err != nil {
+		return nil, constants.NewBadRequestError("user not found")
+	}
+
+	return res, nil
 }
 
 func (s *userService) UpdateUserByID(id string, user *dto.UpdateUserByID) error {
-	err := s.validate.Struct(user)
+	err := s.validate.Validate(user)
 	if err != nil {
-		return utils.HandlerError(err)
+		return s.validate.ValidationMessage(err)
 	}
 
 	data, err := s.FindUserByID(id)
 	if err != nil {
-		return errors.New("user not found")
+		return constants.NewBadRequestError("user not found")
 	}
 
 	return s.repoUser.UpdateUserByID(data.ID, user)
@@ -46,7 +48,7 @@ func (s *userService) UpdateUserByID(id string, user *dto.UpdateUserByID) error 
 func (s *userService) DeleteUserByID(id string) error {
 	data, err := s.FindUserByID(id)
 	if err != nil {
-		return errors.New("user not found")
+		return constants.NewBadRequestError("user not found")
 	}
 
 	return s.repoUser.DeleteUserByID(data.ID)

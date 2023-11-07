@@ -4,23 +4,28 @@ import (
 	"project/go-fiber-boilerplate/interfaces"
 	"project/go-fiber-boilerplate/models/dto"
 	"project/go-fiber-boilerplate/utils"
+	"project/go-fiber-boilerplate/utils/constants"
 	"time"
 
-	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
 )
 
 type authService struct {
 	repoAuth interfaces.UserRepository
-	validate *validator.Validate
+	validate constants.IValidation
 	token    *utils.GenerateToken
 	password *utils.Password
 }
 
-func NewAuthService(repoAuth interfaces.UserRepository, token *utils.GenerateToken, password *utils.Password) interfaces.AuthService {
+func NewAuthService(
+	repoAuth interfaces.UserRepository,
+	token *utils.GenerateToken,
+	password *utils.Password,
+	validate constants.IValidation,
+) interfaces.AuthService {
 	return &authService{
 		repoAuth: repoAuth,
-		validate: validator.New(),
+		validate: validate,
 		token:    token,
 		password: password,
 	}
@@ -28,9 +33,9 @@ func NewAuthService(repoAuth interfaces.UserRepository, token *utils.GenerateTok
 
 func (s *authService) Register(user *dto.Register) error {
 	// validation
-	err := s.validate.Struct(user)
+	err := s.validate.Validate(user)
 	if err != nil {
-		return utils.HandlerError(err)
+		return s.validate.ValidationMessage(err)
 	}
 
 	// hash password
@@ -45,30 +50,30 @@ func (s *authService) Register(user *dto.Register) error {
 
 func (s *authService) Login(user *dto.Login) (*dto.LoginResponse, error) {
 	// validation
-	err := s.validate.Struct(user)
+	err := s.validate.Validate(user)
 	if err != nil {
-		return nil, utils.HandlerError(err)
+		return nil, s.validate.ValidationMessage(err)
 	}
 
 	// check email
 	res, err := s.repoAuth.FindUserByEmail(user.Email)
 	if err != nil {
-		return nil, utils.NewCustomError(400, "email not found")
+		return nil, constants.NewBadRequestError("email not found")
 	}
 
 	err = s.password.ComparePassword(res.Password, user.Password)
 	if err != nil {
-		return nil, utils.NewCustomError(400, "password not match")
+		return nil, constants.NewBadRequestError("password is wrong")
 	}
 
 	accessToken, expiredAccessToken, err := s.token.GenerateAccessToken(res.ID, res.Email, res.FullName)
 	if err != nil {
-		return nil, utils.NewCustomError(500, "failed to generate access token")
+		return nil, constants.NewBadRequestError(err.Error())
 	}
 
 	refreshToken, expiredRefreshToken, err := s.token.GenerateRefreshToken(res.ID, res.Email, res.FullName)
 	if err != nil {
-		return nil, utils.NewCustomError(500, "failed to generate refresh token")
+		return nil, constants.NewBadRequestError(err.Error())
 	}
 
 	token := &dto.LoginResponse{

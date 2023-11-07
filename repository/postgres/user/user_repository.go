@@ -6,6 +6,7 @@ import (
 	"project/go-fiber-boilerplate/interfaces"
 	"project/go-fiber-boilerplate/models/dto"
 	"project/go-fiber-boilerplate/models/entity"
+	"project/go-fiber-boilerplate/utils/constants"
 	"time"
 )
 
@@ -28,14 +29,14 @@ func (r *userRepository) FindAllUsers() ([]dto.FindAllUsers, error) {
 
 	row, err := r.DB.QueryContext(ctx, query)
 	if err != nil {
-		return nil, err
+		return nil, constants.NewInternalServerError(err.Error())
 	}
 
 	for row.Next() {
 		var user dto.FindAllUsers
 		err := row.Scan(&user.ID, &user.FullName, &user.Email, &user.IsMale, &user.CreatedAt)
 		if err != nil {
-			return nil, err
+			return nil, constants.NewInternalServerError(err.Error())
 		}
 
 		data = append(data, user)
@@ -55,7 +56,7 @@ func (r *userRepository) FindUserByID(id string) (*dto.FindUserByID, error) {
 	row := r.DB.QueryRowContext(ctx, query, id)
 	err := row.Scan(&data.ID, &data.FullName, &data.Email, &data.IsMale)
 	if err != nil {
-		return nil, err
+		return nil, constants.NewInternalServerError(err.Error())
 	}
 
 	return data, nil
@@ -74,7 +75,8 @@ func (r *userRepository) UpdateUserByID(id string, user *dto.UpdateUserByID) err
 	_, err = trx.ExecContext(ctx, query, user.FullName, user.Email, user.IsMale, user.UpdatedAt, id)
 
 	if err != nil {
-		return err
+		_ = trx.Rollback()
+		return constants.NewInternalServerError(err.Error())
 	}
 
 	return trx.Commit()
@@ -86,14 +88,16 @@ func (r *userRepository) DeleteUserByID(id string) error {
 
 	trx, err := r.DB.Begin()
 	if err != nil {
-		return err
+		_ = trx.Rollback()
+		return constants.NewInternalServerError(err.Error())
 	}
 
 	query := "DELETE FROM users WHERE id = $1"
 	_, err = trx.ExecContext(ctx, query, id)
 
 	if err != nil {
-		return err
+		_ = trx.Rollback()
+		return constants.NewInternalServerError(err.Error())
 	}
 
 	return trx.Commit()
@@ -113,13 +117,14 @@ func (r *userRepository) InsertUser(user *dto.Register) error {
 
 	trx, err := r.DB.Begin()
 	if err != nil {
-		return err
+		return constants.NewInternalServerError(err.Error())
 	}
 
 	query := "INSERT INTO users (id, email, full_name, password, is_male, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7)"
 	_, err = trx.ExecContext(ctx, query, data.ID, data.Email, data.FullName, data.Password, data.IsMale, data.CreatedAt, data.UpdatedAt)
 	if err != nil {
-		return err
+		_ = trx.Rollback()
+		return constants.NewInternalServerError(err.Error())
 	}
 
 	return trx.Commit()
@@ -135,7 +140,7 @@ func (r *userRepository) FindUserByEmail(email string) (*entity.User, error) {
 
 	err := r.DB.QueryRowContext(ctx, query, email).Scan(&data.ID, &data.Email, &data.FullName, &data.Password)
 	if err != nil {
-		return nil, err
+		return nil, constants.NewInternalServerError(err.Error())
 	}
 
 	return data, nil

@@ -1,8 +1,8 @@
 package middlewares
 
 import (
-	"fmt"
 	"os"
+	"project/go-fiber-boilerplate/utils/constants"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
@@ -14,25 +14,23 @@ func MiddlewaresUser(c *fiber.Ctx) error {
 	secret := os.Getenv("JWT_SECRET")
 
 	if accessToken == "" && refreshToken == "" {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"code":    401,
-			"message": "Unauthorized",
-		})
+		return c.Status(fiber.StatusUnauthorized).JSON(
+			constants.NewUnauthorizedError("nauthorized"),
+		)
 	}
 
 	if accessToken != "" {
 		token, err := jwt.Parse(accessToken, func(token *jwt.Token) (interface{}, error) {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-				return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+				return nil, constants.NewUnauthorizedError("unexpected signing method")
 			}
 			return []byte(secret), nil
 		})
 
 		if err != nil {
-			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-				"code":    401,
-				"message": "Unauthorized",
-			})
+			return c.Status(fiber.StatusUnauthorized).JSON(
+				constants.NewUnauthorizedError("unauthorized"),
+			)
 		}
 
 		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
@@ -46,16 +44,15 @@ func MiddlewaresUser(c *fiber.Ctx) error {
 	if refreshToken != "" {
 		token, err := jwt.Parse(refreshToken, func(token *jwt.Token) (interface{}, error) {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-				return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+				return nil, constants.NewUnauthorizedError("unexpected signing method")
 			}
 			return []byte(secret), nil
 		})
 
 		if err != nil {
-			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-				"code":    401,
-				"message": "Unauthorized",
-			})
+			return c.Status(fiber.StatusUnauthorized).JSON(
+				constants.NewUnauthorizedError("unauthorized"),
+			)
 		}
 
 		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
@@ -66,8 +63,7 @@ func MiddlewaresUser(c *fiber.Ctx) error {
 		}
 	}
 
-	return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-		"code":    401,
-		"message": "Unauthorized",
-	})
+	return c.Status(fiber.StatusUnauthorized).JSON(
+		constants.NewUnauthorizedError("unauthorized"),
+	)
 }

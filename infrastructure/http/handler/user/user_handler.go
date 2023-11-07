@@ -3,6 +3,7 @@ package user
 import (
 	"project/go-fiber-boilerplate/interfaces"
 	"project/go-fiber-boilerplate/models/dto"
+	"project/go-fiber-boilerplate/utils/constants"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -20,17 +21,12 @@ func NewUserHandler(userService interfaces.UserService) interfaces.UserHandler {
 func (h *userHandler) FindAllUsers(c *fiber.Ctx) error {
 	users, err := h.userService.FindAllUsers()
 	if err != nil {
-		return c.Status(400).JSON(fiber.Map{
-			"code":    400,
-			"message": err.Error(),
-		})
+		return c.Status(400).JSON(err)
 	}
 
-	return c.Status(200).JSON(fiber.Map{
-		"code":    200,
-		"message": "success get all users",
-		"result":  users,
-	})
+	return c.Status(200).JSON(
+		constants.NewSuccess("success get all users", users),
+	)
 }
 
 func (h *userHandler) FindUserByID(c *fiber.Ctx) error {
@@ -38,17 +34,12 @@ func (h *userHandler) FindUserByID(c *fiber.Ctx) error {
 
 	user, err := h.userService.FindUserByID(id)
 	if err != nil {
-		return c.Status(400).JSON(fiber.Map{
-			"code":    400,
-			"message": err.Error(),
-		})
+		return c.Status(400).JSON(err)
 	}
 
-	return c.Status(200).JSON(fiber.Map{
-		"code":    200,
-		"message": "success get user by id",
-		"result":  user,
-	})
+	return c.Status(200).JSON(
+		constants.NewSuccess("success get user by id", user),
+	)
 }
 
 func (h *userHandler) UpdateUserByID(c *fiber.Ctx) error {
@@ -58,24 +49,19 @@ func (h *userHandler) UpdateUserByID(c *fiber.Ctx) error {
 
 	err := c.BodyParser(data)
 	if err != nil {
-		return c.Status(400).JSON(fiber.Map{
-			"code":    400,
-			"message": err.Error(),
-		})
+		return c.Status(400).JSON(
+			constants.NewBadRequestError(err.Error()),
+		)
 	}
 
 	err = h.userService.UpdateUserByID(id, data)
 	if err != nil {
-		return c.Status(400).JSON(fiber.Map{
-			"code":    400,
-			"message": err.Error(),
-		})
+		return c.Status(400).JSON(err)
 	}
 
-	return c.Status(200).JSON(fiber.Map{
-		"code":    200,
-		"message": "success update user by id",
-	})
+	return c.Status(200).JSON(
+		constants.NewSuccess("success update user by id", nil),
+	)
 }
 
 func (h *userHandler) DeleteUserByID(c *fiber.Ctx) error {
@@ -83,14 +69,10 @@ func (h *userHandler) DeleteUserByID(c *fiber.Ctx) error {
 
 	err := h.userService.DeleteUserByID(id)
 	if err != nil {
-		return c.Status(400).JSON(fiber.Map{
-			"code":    400,
-			"message": err.Error(),
-		})
+		return c.Status(400).JSON(err)
 	}
 
-	return c.Status(200).JSON(fiber.Map{
-		"code":    200,
-		"message": "success delete user by id",
-	})
+	return c.Status(200).JSON(
+		constants.NewSuccess("success delete user by id", nil),
+	)
 }
