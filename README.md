@@ -8,9 +8,10 @@ routes -> handler -> service -> repository -> database
 
 In folder infrastructure you can also add other methods such as gRPC, GraphQL, etc. </br>
 You can add with folder name grpc, graphql, etc. </br>
-</br>
 In folder infrastructure you can also add other connection like aws, sendgrid, cloudinary, etc. </br>
 You can add with folder name aws, sendgrid, cloudinary, etc. </br>
+In Folder utils/constants you can add error code and validation message. </br>
+In Folder utils you can add helper function like generate token, hash password, etc. </br>
 
 # Getting Started
 
@@ -23,39 +24,7 @@ You can add with folder name aws, sendgrid, cloudinary, etc. </br>
 - You need to install [Git](https://git-scm.com/downloads) on your machine.
 - You need to install [Visual Studio Code](https://code.visualstudio.com/download) on your machine.
 
-## Installation
-
-Clone the repository and run the following commands:
-
-```
-git clone https://github.com/saufiroja/go-fiber-boilerplate.git
-```
-
-Go to the project directory:
-
-```
-cd go-fiber-boilerplate
-```
-
-Copy the .env_example file to .env:
-
-```
-copy .env.example .env
-```
-
-Install dependencies:
-
-```
-go mod tidy
-```
-
-Run the project:
-
-```
-make run
-```
-
-# Tech Stack
+## Tech Stack
 
 - Golang (Go Programming Language)
 - Fiber (Web Framework)
@@ -65,6 +34,38 @@ make run
 - Validator (go-playground/validator)
 - GORM (ORM)
 - UUID (Universally Unique Identifier)
+
+## Installation
+
+Clone the repository and run the following commands:
+
+```bash
+git clone https://github.com/saufiroja/go-fiber-boilerplate.git
+```
+
+Go to the project directory:
+
+```bash
+cd go-fiber-boilerplate
+```
+
+Copy the .env_example file to .env:
+
+```bash
+copy .env.example .env
+```
+
+Install dependencies:
+
+```bash
+go mod tidy
+```
+
+Run the project:
+
+```bash
+make run
+```
 
 # Structure Directory
 
@@ -98,6 +99,10 @@ An example of implementing a hexagonal architecture backend using golang.
 │       │   └── jwt_middlewares.go
 │       └── server/
 │           └── fiber.go
+├── initdb.d/
+│   └── migrations/
+│       ├── 0001_init.up.sql
+│       └── 0002_init.users.sql
 ├── interfaces/
 │   ├── auth_interfaces.go
 │   └── user_interfaces.go
@@ -106,6 +111,9 @@ An example of implementing a hexagonal architecture backend using golang.
 │   │   └── user_dto.go
 │   └── entity/
 │       └── user_entity.go
+├── nginx/
+│   ├── nginx.conf
+│   └── Dockerfile
 ├── repository/
 │   └── postgres/
 │       ├── auth/
@@ -118,8 +126,10 @@ An example of implementing a hexagonal architecture backend using golang.
 │   └── user/
 │       └── user_service.go
 ├── utils/
+│   ├── constants/
+│   │   ├── error.go
+│   │   └── validation.go
 │   ├── generate_token.go
-│   ├── handler_error.go
 │   └── password.go
 ├── .env
 ├── .env.example
@@ -133,71 +143,6 @@ An example of implementing a hexagonal architecture backend using golang.
 └── README.md
 ```
 
-# Example or Usage
+## License
 
-## Interface
-
-```go
-
-type UserRepository interface {
-	InsertUser(user *dto.Register) error
-	FindUserByEmail(email string) (*entity.User, error)
-}
-
-type AuthService interface {
-	Register(user *dto.Register) error
-	Login(user *dto.Login) (*dto.LoginResponse, error)
-}
-
-type NewAuthHandler interface {
-	Register(c *fiber.Ctx) error
-	Login(c *fiber.Ctx) error
-}
-
-```
-
-## Repository
-
-```go
-
-type authRepository struct {
-	DB *gorm.DB
-}
-
-func NewAuthRepository(db *gorm.DB) interfaces.AuthRepository {
-	return &authRepository{
-		DB: db,
-	}
-}
-
-```
-
-## Service
-
-```go
-type authService struct {
-	repoAuth interfaces.UserRepository
-	validate *validator.Validate
-}
-
-func NewAuthService(repoAuth interfaces.AuthRepository) interfaces.AuthService {
-	return &authService{
-		repoAuth: repoAuth,
-		validate: validator.New(),
-	}
-}
-```
-
-## Handler
-
-```go
-type authHandler struct {
-	authService interfaces.AuthService
-}
-
-func NewAuthHandler(authService interfaces.AuthService) interfaces.NewAuthHandler {
-	return &authHandler{
-		authService: authService,
-	}
-}
-```
+This project is licensed under the terms of the MIT license.

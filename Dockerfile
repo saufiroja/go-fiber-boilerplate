@@ -1,6 +1,6 @@
 FROM golang:1.21-alpine AS builder
 
-RUN apk add --no-cache make git gcc libc-dev
+# RUN apk add --no-cache make git gcc libc-dev
 
 WORKDIR /app
 
