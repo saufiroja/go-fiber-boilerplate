@@ -34,6 +34,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up environment variable
+        uses: appleboy/scp-action@v0.1.4
         env:
           PORT: ${{ secrets.PORT }}
           GO_ENV: ${{ secrets.GO_ENV }}
