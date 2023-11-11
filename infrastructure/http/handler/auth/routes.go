@@ -2,7 +2,6 @@ package auth
 
 import (
 	"database/sql"
-	"project/go-fiber-boilerplate/config"
 	repo "project/go-fiber-boilerplate/repository/postgres/user"
 	service "project/go-fiber-boilerplate/service/auth"
 	"project/go-fiber-boilerplate/utils"
@@ -11,7 +10,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func NewAuthRoutes(app *fiber.App, conf *config.AppConfig, db *sql.DB) {
+func NewAuthRoutes(app *fiber.App, db *sql.DB) {
 
 	token := utils.NewGenerateToken()
 	password := utils.NewPassword()

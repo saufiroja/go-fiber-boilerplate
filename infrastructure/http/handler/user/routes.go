@@ -2,7 +2,6 @@ package user
 
 import (
 	"database/sql"
-	"project/go-fiber-boilerplate/config"
 	"project/go-fiber-boilerplate/infrastructure/http/middlewares"
 	repo "project/go-fiber-boilerplate/repository/postgres/user"
 	service "project/go-fiber-boilerplate/service/user"
@@ -11,7 +10,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func NewUserRoutes(app *fiber.App, conf *config.AppConfig, db *sql.DB) {
+func NewUserRoutes(app *fiber.App, db *sql.DB) {
 	validate := constants.NewValidationError()
 
 	repoUser := repo.NewUserRepository(db)
