@@ -9,7 +9,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Set up Go 1.21
         uses: actions/setup-go@v2
@@ -17,10 +18,10 @@ jobs:
           go-version: 1.21
         id: go
 
-      - name: lint
+      - name: Install golint
         run: go get -u golang.org/x/lint/golint
 
-      - name: build
+      - name: Build
         run: go build -o bin/app main.go
 
   test:
@@ -29,10 +30,10 @@ jobs:
     needs: build
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: set up environment variable
-        uses: appleboy/secrets-action@v0.0.1
+      - name: Set up environment variable
         env:
           PORT: ${{ secrets.PORT }}
           GO_ENV: ${{ secrets.GO_ENV }}
