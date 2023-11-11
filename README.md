@@ -125,6 +125,14 @@ An example of implementing a hexagonal architecture backend using golang.
 │   │   └── auth_service.go
 │   └── user/
 │       └── user_service.go
+├── test/
+│   ├── e2e/
+│   │   ├── auth/
+│   │   │   └── auth_test.go
+│   │   ├── health/
+│   │   │   └── health_test.go
+│   │   └── user/
+│   │       └── user_test.go
 ├── utils/
 │   ├── constants/
 │   │   ├── error.go
