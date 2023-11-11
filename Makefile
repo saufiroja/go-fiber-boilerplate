@@ -2,7 +2,7 @@ test: docker-up-test
 	docker-compose -f docker-compose-test.yaml down -v
 	docker-compose -f docker-compose-test.yaml up -d
 	go clean -testcache && go test -v ./test/e2e/...
-	# docker-compose -f docker-compose-test.yaml down -v
+	docker-compose -f docker-compose-test.yaml down -v
 
 dev:
 	go run main.go
