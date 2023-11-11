@@ -15,9 +15,11 @@ type HealthSuiteTest struct {
 	res    *constants.Response
 }
 
-func (suite *HealthSuiteTest) SetupSuite() {
-	suite.client = utils.NewSuiteUtils(&http.Client{})
-	suite.res = &constants.Response{}
+func NewHealthSuiteTest() *HealthSuiteTest {
+	return &HealthSuiteTest{
+		client: utils.NewSuiteUtils(&http.Client{}),
+		res:    &constants.Response{},
+	}
 }
 
 func (suite *HealthSuiteTest) TestRegister() {
@@ -30,5 +32,5 @@ func (suite *HealthSuiteTest) TestRegister() {
 }
 
 func TestHealthSuiteTest(t *testing.T) {
-	suite.Run(t, new(HealthSuiteTest))
+	suite.Run(t, NewHealthSuiteTest())
 }
