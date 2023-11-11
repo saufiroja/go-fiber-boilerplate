@@ -1,0 +1,52 @@
+version: '3.8'
+services:
+  app-backend-test:
+    image: go-fiber-boilerplate:1.0.0
+    container_name: go-fiber-boilerplate-test
+    build: .
+    restart: on-failure
+    env_file:
+      - .env
+    environment:
+      - PORT=${PORT}
+      - JWT_SECRET=${JWT_SECRET}
+      - GO_ENV=${GO_ENV}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - DB_NAME=${DB_NAME}
+      - DB_SSL=${DB_SSL}
+    ports:
+      - 3000:3000
+    volumes:
+      - app-backend:/app
+    depends_on:
+      - postgres
+    networks:
+      - app-backend-test
+
+  postgres:
+    image: postgres:15
+    container_name: postgres-boilerplate
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./initdb.d/migrations:/docker-entrypoint-initdb.d/
+    networks:
+      - app-backend-test
+
+volumes:
+  app-backend:
+  postgres:
+networks:
+  app-backend-test:
+    driver: bridge
