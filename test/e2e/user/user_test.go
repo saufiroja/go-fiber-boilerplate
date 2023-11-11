@@ -1,39 +1,42 @@
 package user_test
 
-// import (
-// 	"fmt"
-// 	"net/http"
-// 	"project/go-fiber-boilerplate/utils"
-// 	"project/go-fiber-boilerplate/utils/constants"
-// 	"testing"
+import (
+	"net/http"
+	"project/go-fiber-boilerplate/utils"
+	"project/go-fiber-boilerplate/utils/constants"
+	"testing"
+	"time"
 
-// 	"github.com/stretchr/testify/suite"
-// )
+	"github.com/stretchr/testify/suite"
+)
 
-// type UserSuiteTest struct {
-// 	suite.Suite
-// 	client utils.ISuite
-// 	res    *constants.Response
-// }
+type UserSuiteTest struct {
+	suite.Suite
+	client utils.ISuite
+	res    *constants.Response
+}
 
-// func (suite *UserSuiteTest) SetupSuite() {
-// 	suite.client = utils.NewSuiteUtils(&http.Client{})
-// 	suite.res = &constants.Response{}
-// }
+func NewUserSuiteTest() *UserSuiteTest {
+	return &UserSuiteTest{
+		client: utils.NewSuiteUtils(&http.Client{}),
+		res:    &constants.Response{},
+	}
+}
 
-// func (suite *UserSuiteTest) TestFindAllUsers() {
-// 	res, resp, err := suite.client.Get("http://localhost:3000/user", suite.res, "")
+func (suite *UserSuiteTest) TestFindAllUsers() {
+	time.Sleep(3 * time.Second)
+	res, resp, err := suite.client.Get("http://localhost:3000/user", suite.res)
 
-// 	suite.NoError(err)
-// 	suite.Equal(http.StatusOK, resp.StatusCode)
+	suite.NoError(err)
+	suite.Equal(http.StatusOK, resp.StatusCode)
 
-// 	fmt.Println(res)
-// 	suite.Equal("success get all users", res.Message)
-// }
+	suite.Equal("success get all users", res.Message)
+	suite.NotEmpty(res.Result)
+}
 
 // func (suite *UserSuiteTest) TestFindUserByID() {
 // 	req := dto.Login{
-// 		Email:    "test@gmail.com",
+// 		Email:    "halo@gmail.com",
 // 		Password: "12345678",
 // 	}
 
@@ -66,6 +69,6 @@ package user_test
 // 	// suite.NotEmpty(res.Result)
 // }
 
-// func TestUserTestSuite(t *testing.T) {
-// 	suite.Run(t, new(UserSuiteTest))
-// }
+func TestUserTestSuite(t *testing.T) {
+	suite.Run(t, NewUserSuiteTest())
+}
