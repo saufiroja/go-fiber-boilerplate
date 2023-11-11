@@ -6,7 +6,7 @@ services:
     build: .
     restart: on-failure
     env_file:
-      - .env
+      - ./.env
     environment:
       - PORT=${PORT}
       - JWT_SECRET=${JWT_SECRET}
@@ -30,7 +30,7 @@ services:
     image: postgres:15
     container_name: postgres-boilerplate
     env_file:
-      - .env
+      - ./.env
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASS}
