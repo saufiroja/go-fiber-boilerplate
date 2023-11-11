@@ -1,6 +1,6 @@
 test: docker-up-test
 	docker-compose -f docker-compose-test.yaml down -v
-	docker-compose -f docker-compose-test.yaml up -d
+	docker-compose -f docker-compose-test.yaml --env-file .env up -dker-compose -f docker-compose-test.yaml up -d --env-file .env.test
 	go clean -testcache && go test -v ./test/e2e/...
 	docker-compose -f docker-compose-test.yaml down -v
 
