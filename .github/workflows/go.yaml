@@ -31,6 +31,19 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: set up environment variable
+        uses: appleboy/secrets-action@v0.0.1
+        env:
+          PORT: ${{ secrets.PORT }}
+          GO_ENV: ${{ secrets.GO_ENV }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_SSL: ${{ secrets.DB_SSL }}
+
       - name: Set up Go 1.21
         uses: actions/setup-go@v2
         with:
